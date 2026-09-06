@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover, maximum-scale=1.0" />
     <title>Happy 17th, Elena 💜</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
     </script>
@@ -29,6 +29,10 @@
             --btn-border: rgba(180, 140, 220, 0.65);
             --btn-shadow: 0 10px 30px rgba(80, 30, 150, 0.45);
             --btn-active-shadow: 0 15px 45px rgba(120, 50, 200, 0.7), 0 0 50px rgba(160, 80, 240, 0.4);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
         }
         * {
             margin: 0;
@@ -38,6 +42,8 @@
         html {
             scroll-behavior: smooth;
             overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
         body {
             font-family: 'Cormorant Garamond', serif;
@@ -46,6 +52,12 @@
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overscroll-behavior-y: none;
+            touch-action: manipulation;
         }
         canvas {
             position: fixed;
@@ -53,6 +65,7 @@
             left: 0;
             pointer-events: none;
             z-index: 1;
+            display: block;
         }
         .section {
             min-height: 100vh;
@@ -64,7 +77,7 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            padding: 2rem 1.5rem;
+            padding: calc(2rem + var(--safe-top)) calc(1.5rem + var(--safe-left)) calc(2rem + var(--safe-bottom)) calc(1.5rem + var(--safe-right));
             overflow: hidden;
         }
         .section.locked {
@@ -93,6 +106,11 @@
             letter-spacing: 1px;
             display: inline-block;
             touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            min-height: 48px;
+            min-width: 120px;
         }
         .btn:hover {
             background: var(--btn-hover-bg);
@@ -103,6 +121,10 @@
         .btn:active {
             transform: scale(0.93);
             transition: transform 0.1s ease;
+        }
+        .btn:focus-visible {
+            outline: 3px solid rgba(200, 160, 240, 0.7);
+            outline-offset: 3px;
         }
         .btn-no {
             background: linear-gradient(135deg, #6b2d5b, #4b1e40);
@@ -243,24 +265,6 @@
             top: 50%;
             left: 50%;
         }
-        .flower-bloom .petal:nth-child(1) {
-            transform: translate(-50%, -50%) rotate(0deg) translateY(-18px);
-        }
-        .flower-bloom .petal:nth-child(2) {
-            transform: translate(-50%, -50%) rotate(60deg) translateY(-18px);
-        }
-        .flower-bloom .petal:nth-child(3) {
-            transform: translate(-50%, -50%) rotate(120deg) translateY(-18px);
-        }
-        .flower-bloom .petal:nth-child(4) {
-            transform: translate(-50%, -50%) rotate(180deg) translateY(-18px);
-        }
-        .flower-bloom .petal:nth-child(5) {
-            transform: translate(-50%, -50%) rotate(240deg) translateY(-18px);
-        }
-        .flower-bloom .petal:nth-child(6) {
-            transform: translate(-50%, -50%) rotate(300deg) translateY(-18px);
-        }
         .center {
             position: absolute;
             width: 15px;
@@ -295,13 +299,14 @@
         }
         .progress-track {
             position: fixed;
-            right: 15px;
+            right: calc(8px + var(--safe-right));
             top: 50%;
             transform: translateY(-50%);
             z-index: 8000;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            pointer-events: auto;
         }
         .progress-dot {
             width: 8px;
@@ -311,6 +316,9 @@
             opacity: 0.4;
             transition: all 0.3s ease;
             cursor: pointer;
+            border: none;
+            padding: 0;
+            touch-action: manipulation;
         }
         .progress-dot.active {
             background: var(--soft-lavender);
@@ -325,7 +333,7 @@
         .wish-card {
             background: var(--glass-bg);
             border-radius: 16px;
-            padding: 1.5rem;
+            padding: 1.2rem;
             border: 1px solid var(--card-border);
             box-shadow: 0 8px 25px rgba(50, 18, 100, 0.3);
             cursor: pointer;
@@ -333,33 +341,37 @@
             text-align: left;
             width: 100%;
             max-width: 500px;
-            margin: 0 auto 1rem;
+            margin: 0 auto 0.8rem;
             position: relative;
             overflow: hidden;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
-        .wish-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(80, 30, 150, 0.5);
+        .wish-card:active {
+            transform: scale(0.98);
         }
         .wish-card .wish-number {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: var(--gold);
             margin-right: 0.5rem;
         }
         .wish-card .wish-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: var(--text-primary);
             display: inline;
         }
         .wish-card .wish-text {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--text-secondary);
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease;
+            margin-top: 0.3rem;
+            line-height: 1.5;
         }
         .wish-card.open .wish-text {
             max-height: 200px;
@@ -369,7 +381,7 @@
             right: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: var(--lavender);
             transition: transform 0.3s ease;
         }
@@ -388,15 +400,30 @@
             width: 100%;
             background: linear-gradient(145deg, rgba(30, 12, 60, 0.8), rgba(20, 8, 45, 0.9));
             border-radius: 16px;
-            padding: 2.5rem 1.8rem;
+            padding: 2rem 1.5rem;
             border: 1px solid rgba(180, 140, 220, 0.35);
             box-shadow: 0 30px 70px rgba(50, 18, 100, 0.45);
             backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
             text-align: left;
-            line-height: 1.85;
-            max-height: 78dvh;
+            line-height: 1.75;
+            max-height: 72dvh;
             overflow-y: auto;
             position: relative;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(180, 140, 220, 0.4) transparent;
+        }
+        .letter-paper::-webkit-scrollbar {
+            width: 4px;
+        }
+        .letter-paper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .letter-paper::-webkit-scrollbar-thumb {
+            background: rgba(180, 140, 220, 0.4);
+            border-radius: 4px;
         }
         .letter-paper::after {
             content: '';
@@ -411,9 +438,9 @@
         }
         .letter-paper p {
             font-family: 'Cormorant Garamond', 'Georgia', serif;
-            font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
             color: #e8ddf8;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             opacity: 0;
             transform: translateY(22px);
             transition: all 0.7s ease;
@@ -424,9 +451,9 @@
         }
         .final-line {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #f0e8f8;
-            margin-bottom: 1.4rem;
+            margin-bottom: 1rem;
             text-align: center;
             opacity: 0;
             transform: translateY(20px);
@@ -444,6 +471,7 @@
             align-items: center;
             cursor: pointer;
             animation: cakeFloat 2.8s ease-in-out infinite;
+            touch-action: manipulation;
         }
         .cake-base {
             position: relative;
@@ -654,6 +682,7 @@
         .thing-card {
             animation: thingCardPop 0.5s var(--bounce) both;
             cursor: pointer;
+            touch-action: manipulation;
         }
         .thing-card.flipped .thing-inner {
             transform: rotateY(180deg);
@@ -665,7 +694,177 @@
             transform-origin: bottom center;
             will-change: transform, opacity;
         }
-        @media (max-width: 600px) {
+        .env-wrapper {
+            cursor: pointer;
+            width: min(260px, 68vw);
+            height: min(185px, 46vw);
+            margin: 0 auto;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+        .env {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .env-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #3d1a6e, #28104d);
+            border-radius: 14px;
+            border: 1.5px solid rgba(180, 140, 220, 0.45);
+            overflow: hidden;
+            box-shadow: 0 22px 55px rgba(90, 35, 170, 0.4);
+        }
+        .env-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 58%;
+            background: linear-gradient(180deg, #4f2685, #3a1a62);
+            clip-path: polygon(0 0, 50% 62%, 100% 0);
+            transform-origin: top center;
+            z-index: 2;
+        }
+        .env-letter-peek {
+            position: absolute;
+            top: 22%;
+            left: 50%;
+            width: 68%;
+            height: 48%;
+            background: linear-gradient(180deg, #faf7ff, #e8ddf8);
+            border-radius: 7px;
+            z-index: 1;
+            opacity: 0;
+            transform: translate(-50%, -50%) translateY(35px);
+        }
+        .env-light-ray {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            width: 3px;
+            height: 0;
+            background: linear-gradient(to bottom, rgba(220, 190, 250, 0.9), transparent);
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        .thing-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.55s;
+        }
+        .thing-front,
+        .thing-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.3rem;
+            text-align: center;
+        }
+        .thing-front {
+            background: linear-gradient(135deg, #2a1050, #3d1a6e);
+            border: 1.5px solid rgba(180, 140, 220, 0.4);
+            color: #d4bff0;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+        }
+        .thing-back {
+            background: linear-gradient(135deg, #4b2380, #331860);
+            transform: rotateY(180deg);
+            color: #f0e8f8;
+            font-size: 0.75rem;
+            line-height: 1.3;
+        }
+        #musicFAB {
+            position: fixed;
+            bottom: calc(18px + var(--safe-bottom));
+            right: calc(16px + var(--safe-right));
+            z-index: 9000;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4b2380, #301558);
+            border: 2px solid rgba(180, 140, 220, 0.55);
+            box-shadow: 0 10px 32px rgba(80, 28, 160, 0.5);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #e0d5f5;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+        #musicFAB:active {
+            transform: scale(0.9);
+        }
+        #secretStar {
+            position: absolute;
+            bottom: 18%;
+            right: 12%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.35;
+            touch-action: manipulation;
+        }
+
+        @media (max-width: 768px) {
+            .btn {
+                font-size: 1.1rem;
+                padding: 0.75rem 2rem;
+                min-height: 44px;
+                min-width: 100px;
+            }
+            .wish-card {
+                padding: 1rem;
+            }
+            .wish-card .wish-number {
+                font-size: 1.3rem;
+            }
+            .wish-card .wish-title {
+                font-size: 1.05rem;
+            }
+            .wish-card .wish-text {
+                font-size: 0.9rem;
+            }
+            .progress-track {
+                right: calc(4px + var(--safe-right));
+                gap: 7px;
+            }
+            .progress-dot {
+                width: 6px;
+                height: 6px;
+            }
+            .letter-paper {
+                padding: 1.5rem 1rem;
+                max-height: 70dvh;
+                border-radius: 12px;
+            }
+            .letter-paper p {
+                font-size: 0.95rem;
+                margin-bottom: 0.6rem;
+            }
+            .final-line {
+                font-size: 1.05rem;
+                margin-bottom: 0.7rem;
+            }
             .cake-base {
                 width: 170px;
             }
@@ -684,7 +883,7 @@
                 margin-top: -6px;
             }
             .cake-number {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
             }
             .candles {
                 top: -32px;
@@ -695,19 +894,150 @@
                 height: 28px;
             }
             .flame {
-                width: 8px;
-                height: 12px;
-                top: -10px;
+                width: 7px;
+                height: 11px;
+                top: -9px;
             }
             .cake-plate {
                 width: 180px;
             }
             .flower-scene {
                 max-width: 320px;
-                height: 320px;
+                height: 300px;
+            }
+            .soil {
+                width: 220px;
+            }
+            .section {
+                padding: calc(1.2rem + var(--safe-top)) calc(0.8rem + var(--safe-left)) calc(1.2rem + var(--safe-bottom)) calc(0.8rem + var(--safe-right));
+            }
+            #musicFAB {
+                width: 46px;
+                height: 46px;
+                font-size: 1.1rem;
+                bottom: calc(12px + var(--safe-bottom));
+                right: calc(10px + var(--safe-right));
+            }
+            .thing-back {
+                font-size: 0.65rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .letter-paper {
+                padding: 1.2rem 0.8rem;
+                max-height: 68dvh;
+            }
+            .letter-paper p {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+            .btn {
+                font-size: 1rem;
+                padding: 0.65rem 1.5rem;
+                min-width: 85px;
+                min-height: 40px;
+                border-radius: 40px;
+            }
+            .flower-scene {
+                max-width: 260px;
+                height: 240px;
+            }
+            .soil {
+                width: 180px;
+                height: 15px;
+            }
+            .wish-card .wish-title {
+                font-size: 0.95rem;
+            }
+            .wish-card .wish-number {
+                font-size: 1.1rem;
+            }
+            .progress-track {
+                gap: 5px;
+            }
+            .progress-dot {
+                width: 5px;
+                height: 5px;
+            }
+            #musicFAB {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+                bottom: calc(8px + var(--safe-bottom));
+                right: calc(6px + var(--safe-right));
+            }
+            .thing-back {
+                font-size: 0.55rem;
+                padding: 0.15rem;
+            }
+            .thing-front {
+                font-size: 1.1rem;
+            }
+            .candles {
+                top: -26px;
+                gap: 6px;
+            }
+            .candle {
+                width: 4px;
+                height: 22px;
+            }
+            .flame {
+                width: 5px;
+                height: 8px;
+                top: -7px;
+            }
+            .cake-layer-bottom {
+                width: 140px;
+                height: 40px;
+            }
+            .cake-layer-middle {
+                width: 105px;
+                height: 32px;
+                margin-top: -6px;
+            }
+            .cake-layer-top {
+                width: 70px;
+                height: 26px;
+                margin-top: -5px;
+            }
+            .cake-number {
+                font-size: 1.2rem;
+            }
+            .cake-plate {
+                width: 145px;
+                height: 8px;
+            }
+            .cake-base {
+                width: 140px;
+            }
+            .happy-text-char {
+                font-size: 0.85em;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .cake-container {
+                animation: none;
+            }
+            .happy-text-char {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+        @media (max-height: 500px) {
+            .section {
+                min-height: auto;
+                padding: 3rem 1rem;
             }
             .letter-paper {
-                padding: 1.8rem 1.2rem;
+                max-height: 60dvh;
             }
         }
     </style>
@@ -716,42 +1046,42 @@
     <canvas id="bgCanvas"></canvas>
     <canvas id="fwCanvas"></canvas>
 
-    <div class="progress-track" id="progressTrack">
-        <div class="progress-dot" data-section="envelopeSection" aria-label="Envelope"></div>
-        <div class="progress-dot" data-section="letterSection" aria-label="Letter"></div>
-        <div class="progress-dot" data-section="wishesSection" aria-label="Things I Wanna Do"></div>
-        <div class="progress-dot" data-section="thingsSection" aria-label="17 Little Things"></div>
-        <div class="progress-dot" data-section="flowerSection" aria-label="Flowers"></div>
-        <div class="progress-dot" data-section="questionSection" aria-label="Question"></div>
-        <div class="progress-dot" data-section="cakeSection" aria-label="Cake"></div>
-        <div class="progress-dot" data-section="seventeenSecondsSection" aria-label="17 Seconds"></div>
-        <div class="progress-dot" data-section="finalSection" aria-label="Final"></div>
+    <div class="progress-track" id="progressTrack" aria-label="Page navigation">
+        <button class="progress-dot" data-section="envelopeSection" aria-label="Go to envelope section" tabindex="-1"></button>
+        <button class="progress-dot" data-section="letterSection" aria-label="Go to letter section" tabindex="-1"></button>
+        <button class="progress-dot" data-section="wishesSection" aria-label="Go to wishes section" tabindex="-1"></button>
+        <button class="progress-dot" data-section="thingsSection" aria-label="Go to things section" tabindex="-1"></button>
+        <button class="progress-dot" data-section="flowerSection" aria-label="Go to flowers section" tabindex="-1"></button>
+        <button class="progress-dot" data-section="questionSection" aria-label="Go to question section" tabindex="-1"></button>
+        <button class="progress-dot" data-section="cakeSection" aria-label="Go to cake section" tabindex="-1"></button>
+        <button class="progress-dot" data-section="seventeenSecondsSection" aria-label="Go to 17 seconds section" tabindex="-1"></button>
+        <button class="progress-dot" data-section="finalSection" aria-label="Go to final section" tabindex="-1"></button>
     </div>
 
-    <div id="countdownOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center, #140530 0%, #080114 55%, #030010 100%);z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;">
-        <div id="cdNumber" style="font-family:'Playfair Display',serif;font-size:clamp(7rem,18vw,13rem);font-weight:700;color:#e0d5f5;opacity:0;"></div>
-        <div id="cdSubtext" style="font-family:'Dancing Script',cursive;font-size:clamp(1.3rem,3.2vw,1.9rem);color:#d4bff0;opacity:0;margin-top:0.8rem;"></div>
-        <div id="cdReveal" style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4.5vw,3.2rem);font-weight:700;color:#fff;opacity:0;line-height:1.35;"></div>
-        <div class="btn-row" id="cdButtonsRow" style="display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1.8rem;opacity:0;pointer-events:none;">
+    <div id="countdownOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center,#140530 0%,#080114 55%,#030010 100%);z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;">
+        <div id="cdNumber" style="font-family:'Playfair Display',serif;font-size:clamp(6rem,16vw,12rem);font-weight:700;color:#e0d5f5;opacity:0;pointer-events:none;"></div>
+        <div id="cdSubtext" style="font-family:'Dancing Script',cursive;font-size:clamp(1.2rem,3vw,1.8rem);color:#d4bff0;opacity:0;margin-top:0.6rem;pointer-events:none;"></div>
+        <div id="cdReveal" style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,3rem);font-weight:700;color:#fff;opacity:0;line-height:1.35;pointer-events:none;text-align:center;padding:0 1rem;"></div>
+        <div class="btn-row" id="cdButtonsRow" style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:1.5rem;opacity:0;pointer-events:none;">
             <button id="cdOpenBtn" class="btn">Open 💜</button>
             <button id="cdNoBtn" class="btn btn-no">No 😭</button>
         </div>
-        <div id="noMessage" style="font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,4vw,2.5rem);color:#ff6b81;text-shadow:0 0 25px rgba(255,107,129,0.8),0 0 60px rgba(255,107,129,0.5);position:absolute;top:60%;left:50%;transform:translate(-50%,-50%);z-index:10001;white-space:nowrap;opacity:0;pointer-events:none;">HOW DARE YOU SAY NO 😤💢</div>
+        <div id="noMessage" style="font-family:'Dancing Script',cursive;font-size:clamp(1.6rem,3.8vw,2.4rem);color:#ff6b81;text-shadow:0 0 25px rgba(255,107,129,0.8),0 0 60px rgba(255,107,129,0.5);position:absolute;top:60%;left:50%;transform:translate(-50%,-50%);z-index:10001;white-space:nowrap;opacity:0;pointer-events:none;">HOW DARE YOU SAY NO 😤💢</div>
     </div>
 
     <div id="mainContent" style="opacity:0;transition:opacity 1s;">
         <section id="envelopeSection" class="section unlocked" data-section="envelopeSection">
-            <div class="env-wrapper" style="perspective:1300px;cursor:pointer;width:min(260px,68vw);height:min(185px,46vw);margin:0 auto;touch-action:manipulation;">
-                <div class="env" style="width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);">
-                    <div class="env-body" style="position:absolute;width:100%;height:100%;background:linear-gradient(145deg,#3d1a6e,#28104d);border-radius:14px;border:1.5px solid rgba(180,140,220,0.45);overflow:hidden;box-shadow:0 22px 55px rgba(90,35,170,0.4);">
-                        <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-size:3.2rem;color:rgba(220,190,250,0.75);text-shadow:0 0 40px rgba(150,90,220,0.55);">E</span>
+            <div class="env-wrapper" id="envWrapper">
+                <div class="env" id="envEl">
+                    <div class="env-body">
+                        <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-size:3rem;color:rgba(220,190,250,0.75);text-shadow:0 0 40px rgba(150,90,220,0.55);pointer-events:none;">E</span>
                     </div>
-                    <div class="env-flap" style="position:absolute;top:0;left:0;width:100%;height:58%;background:linear-gradient(180deg,#4f2685,#3a1a62);clip-path:polygon(0 0,50% 62%,100% 0);transform-origin:top center;z-index:2;"></div>
-                    <div class="env-letter-peek" style="position:absolute;top:22%;left:50%;width:68%;height:48%;background:linear-gradient(180deg,#faf7ff,#e8ddf8);border-radius:7px;z-index:1;opacity:0;transform:translate(-50%,-50%) translateY(35px);"></div>
-                    <div class="env-light-ray" style="position:absolute;top:25%;left:50%;width:3px;height:0;background:linear-gradient(to bottom,rgba(220,190,250,0.9),transparent);transform:translateX(-50%);z-index:0;"></div>
+                    <div class="env-flap" id="envFlap"></div>
+                    <div class="env-letter-peek" id="envPeek"></div>
+                    <div class="env-light-ray" id="envRay"></div>
                 </div>
             </div>
-            <p class="env-hint" style="font-family:'Dancing Script',cursive;color:#c9b8e0;font-size:1.1rem;">okay… this is for you 👀<br>tap it</p>
+            <p class="env-hint" id="envHint" style="font-family:'Dancing Script',cursive;color:#c9b8e0;font-size:1.1rem;margin-top:1rem;">okay… this is for you 👀<br>tap it</p>
         </section>
 
         <section id="letterSection" class="section locked" data-section="letterSection">
@@ -804,49 +1134,49 @@
                 <p>And please remember—</p>
                 <p>out of all the people in the world, somehow I got lucky enough to meet you.</p>
                 <p>🌻💜<br>Happy birthday, Elena.<br>i love you🤍</p>
-                <p style="font-family:'Dancing Script',cursive;font-size:1.5rem;color:#d4bff0;text-align:right;margin-top:1.5rem;">— Gokul 🤍</p>
+                <p style="font-family:'Dancing Script',cursive;font-size:1.4rem;color:#d4bff0;text-align:right;margin-top:1rem;">— Gokul 🤍</p>
             </div>
-            <button class="btn" id="letterNextBtn" style="margin-top:1.5rem;">okay, next →</button>
+            <button class="btn" id="letterNextBtn" style="margin-top:1rem;">okay, next →</button>
         </section>
 
         <section id="wishesSection" class="section locked" data-section="wishesSection">
-            <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:#f0e8f8;margin-bottom:2rem;">Things I Wanna Do With You 💜</h2>
-            <div id="wishesContainer" style="width:100%;max-width:600px;margin:0 auto;"></div>
-            <p id="wishesFooter" style="font-family:'Dancing Script',cursive;font-size:1.3rem;color:#d4bff0;margin-top:2rem;opacity:0;">All of these are still only a few things I wanna do with you. 💜</p>
-            <button class="btn" id="wishesNextBtn" style="margin-top:1rem;display:none;">keep going 👀</button>
+            <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,2rem);color:#f0e8f8;margin-bottom:1.5rem;">Things I Wanna Do With You 💜</h2>
+            <div id="wishesContainer" style="width:100%;max-width:600px;margin:0 auto;max-height:55dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;"></div>
+            <p id="wishesFooter" style="font-family:'Dancing Script',cursive;font-size:1.2rem;color:#d4bff0;margin-top:1rem;opacity:0;">All of these are still only a few things I wanna do with you. 💜</p>
+            <button class="btn" id="wishesNextBtn" style="margin-top:0.5rem;display:none;">keep going 👀</button>
         </section>
 
         <section id="thingsSection" class="section locked" data-section="thingsSection">
-            <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:#f0e8f8;margin-bottom:0.5rem;">17 Little Things About You 💜</h2>
-            <p id="thingsCounter" style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#b794d9;margin-bottom:1.5rem;">0 / 17 discovered</p>
-            <div id="thingsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:0.7rem;max-width:580px;margin:0 auto;"></div>
-            <p id="thingsFooter" style="font-family:'Dancing Script',cursive;font-size:1.3rem;color:#d4bff0;margin-top:2rem;opacity:0;">okay… you actually found all 17 😭💜</p>
-            <button class="btn" id="thingsNextBtn" style="margin-top:1rem;display:none;">one more →</button>
+            <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,2rem);color:#f0e8f8;margin-bottom:0.3rem;">17 Little Things About You 💜</h2>
+            <p id="thingsCounter" style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#b794d9;margin-bottom:1rem;">0 / 17 discovered</p>
+            <div id="thingsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:0.6rem;max-width:550px;margin:0 auto;width:100%;"></div>
+            <p id="thingsFooter" style="font-family:'Dancing Script',cursive;font-size:1.2rem;color:#d4bff0;margin-top:1.5rem;opacity:0;">okay… you actually found all 17 😭💜</p>
+            <button class="btn" id="thingsNextBtn" style="margin-top:0.5rem;display:none;">one more →</button>
         </section>
 
         <section id="flowerSection" class="section locked" data-section="flowerSection">
             <div class="flower-scene" id="flowerScene">
                 <div class="soil"></div>
             </div>
-            <p class="flower-message" style="font-family:'Dancing Script',cursive;font-size:1.4rem;color:#d4bff0;margin-top:1rem;opacity:0;">okay… I remembered your flowers 😭💜</p>
+            <p class="flower-message" style="font-family:'Dancing Script',cursive;font-size:1.3rem;color:#d4bff0;margin-top:0.8rem;opacity:0;">okay… I remembered your flowers 😭💜</p>
             <button id="btnContinue" class="btn" style="display:none;">keep going →</button>
         </section>
 
         <section id="questionSection" class="section locked" data-section="questionSection">
-            <div style="background:var(--glass-bg);border-radius:22px;padding:2.5rem 1.8rem;border:1px solid rgba(180,140,220,0.35);box-shadow:0 30px 65px rgba(50,18,100,0.45);backdrop-filter:blur(20px);max-width:480px;width:100%;">
-                <p style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#f0e8f8;">Okay... one tiny question. 👀</p>
-                <p style="font-family:'Dancing Script',cursive;font-size:2.3rem;color:#d4bff0;margin:1.8rem 0;">will y marry me</p>
-                <div style="display:flex;gap:0.9rem;flex-wrap:wrap;justify-content:center;">
+            <div style="background:var(--glass-bg);border-radius:20px;padding:2rem 1.5rem;border:1px solid rgba(180,140,220,0.35);box-shadow:0 30px 65px rgba(50,18,100,0.45);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);max-width:460px;width:100%;">
+                <p style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#f0e8f8;">Okay... one tiny question. 👀</p>
+                <p style="font-family:'Dancing Script',cursive;font-size:2rem;color:#d4bff0;margin:1.5rem 0;">will y marry me</p>
+                <div style="display:flex;gap:0.7rem;flex-wrap:wrap;justify-content:center;">
                     <button id="btnYes" class="btn">Obviously 💜</button>
                     <button id="btnOfCourse" class="btn">Of course 😭</button>
                 </div>
-                <p id="responseText" style="font-family:'Dancing Script',cursive;font-size:1.5rem;color:#e0d5f5;margin-top:1.8rem;opacity:0;">good 😭 I was hoping you'd say that.</p>
-                <button class="btn" id="questionNextBtn" style="margin-top:1rem;display:none;">okay, next →</button>
+                <p id="responseText" style="font-family:'Dancing Script',cursive;font-size:1.4rem;color:#e0d5f5;margin-top:1.5rem;opacity:0;">good 😭 I was hoping you'd say that.</p>
+                <button class="btn" id="questionNextBtn" style="margin-top:0.8rem;display:none;">okay, next →</button>
             </div>
         </section>
 
         <section id="cakeSection" class="section locked" data-section="cakeSection">
-            <div class="cake-container" id="cakeWrap" style="position:relative;display:flex;flex-direction:column;align-items:center;cursor:pointer;">
+            <div class="cake-container" id="cakeWrap">
                 <div class="cake-base">
                     <div class="cake-layer cake-layer-bottom"></div>
                     <div class="cake-layer cake-layer-middle"></div>
@@ -862,10 +1192,10 @@
                     </div>
                 </div>
                 <div class="cake-plate"></div>
-                <div id="clickMeLabel" style="font-family:'Dancing Script',cursive;font-size:1.5rem;color:#f0e8f8;text-shadow:0 0 15px var(--glow-purple);margin-top:1rem;animation:clickMePulse 1.8s ease-in-out infinite;">click me 👀</div>
-                <p id="cakeWish" style="font-family:'Dancing Script',cursive;font-size:1.3rem;color:#d4bff0;margin-top:0.8rem;opacity:0;">make a wish, Elena… ✨</p>
-                <p id="cakeReveal" style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:#fff;margin-top:1.5rem;opacity:0;text-shadow:0 0 50px var(--glow-purple);">HAPPY 17TH ELENA 💜🎂</p>
-                <button class="btn" id="cakeNextBtn" style="margin-top:1.5rem;display:none;">one last thing… 👀</button>
+                <div id="clickMeLabel" style="font-family:'Dancing Script',cursive;font-size:1.4rem;color:#f0e8f8;text-shadow:0 0 15px var(--glow-purple);margin-top:0.8rem;animation:clickMePulse 1.8s ease-in-out infinite;">click me 👀</div>
+                <p id="cakeWish" style="font-family:'Dancing Script',cursive;font-size:1.2rem;color:#d4bff0;margin-top:0.5rem;opacity:0;">make a wish, Elena… ✨</p>
+                <p id="cakeReveal" style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,2.4rem);font-weight:700;color:#fff;margin-top:1rem;opacity:0;text-shadow:0 0 50px var(--glow-purple);">HAPPY 17TH ELENA 💜🎂</p>
+                <button class="btn" id="cakeNextBtn" style="margin-top:1rem;display:none;">one last thing… 👀</button>
             </div>
         </section>
 
@@ -874,15 +1204,15 @@
                 <button id="startSeventeenBtn" class="btn">give me 17 seconds.</button>
                 <div id="seventeenTimer" style="display:none;">
                     <p class="countdown-number" id="seventeenCount">17</p>
-                    <p id="seventeenMessage" style="font-family:'Dancing Script',cursive;font-size:1.5rem;color:#d4bff0;margin-top:1rem;"></p>
+                    <p id="seventeenMessage" style="font-family:'Dancing Script',cursive;font-size:1.3rem;color:#d4bff0;margin-top:0.8rem;"></p>
                 </div>
             </div>
-            <button class="btn" id="seventeenNextBtn" style="margin-top:1.5rem;display:none;">okay, I'm ready 💜</button>
+            <button class="btn" id="seventeenNextBtn" style="margin-top:1rem;display:none;">okay, I'm ready 💜</button>
         </section>
 
         <section id="finalSection" class="section locked" data-section="finalSection">
-            <div id="finalContent" style="text-align:center;position:relative;z-index:3;">
-                <p id="oneLastThing" style="font-family:'Dancing Script',cursive;font-size:2rem;color:#d4bff0;opacity:0;">One last thing… 👀</p>
+            <div id="finalContent" style="text-align:center;position:relative;z-index:3;width:100%;max-width:600px;margin:0 auto;">
+                <p id="oneLastThing" style="font-family:'Dancing Script',cursive;font-size:1.8rem;color:#d4bff0;opacity:0;">One last thing… 👀</p>
                 <button id="openFinalBtn" class="btn" style="opacity:0;pointer-events:none;">open it 💜</button>
                 <div id="finalMessageContainer" style="max-width:600px;margin:0 auto;opacity:0;">
                     <p class="final-line">and that's it…</p>
@@ -890,623 +1220,634 @@
                     <p class="final-line">well… almost everything. 😭</p>
                     <p class="final-line">i hope you smiled at least once while reading all of this.</p>
                     <p class="final-line">happy 17th birthday, elena. 💜</p>
-                    <p class="final-line" style="font-family:'Dancing Script',cursive;font-size:1.5rem;color:#d4bff0;margin-top:1.5rem;">— Gokul 🤍</p>
+                    <p class="final-line" style="font-family:'Dancing Script',cursive;font-size:1.4rem;color:#d4bff0;margin-top:1rem;">— Gokul 🤍</p>
                 </div>
-                <span id="secretStar" style="position:absolute;bottom:18%;right:16%;font-size:1.3rem;cursor:pointer;z-index:10;opacity:0.35;">✨</span>
+                <span id="secretStar" style="position:absolute;bottom:5%;right:5%;font-size:1.2rem;cursor:pointer;z-index:10;opacity:0.35;">✨</span>
             </div>
         </section>
     </div>
 
-    <div id="musicFAB" title="🎵 Play Happy Birthday Song" style="position:fixed;bottom:24px;right:20px;z-index:9000;width:55px;height:55px;border-radius:50%;background:linear-gradient(135deg,#4b2380,#301558);border:2px solid rgba(180,140,220,0.55);box-shadow:0 10px 32px rgba(80,28,160,0.5);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#e0d5f5;">
+    <div id="musicFAB" title="🎵 Play Happy Birthday Song" role="button" aria-label="Toggle music">
         🎵
     </div>
     <audio id="bgAudio" preload="none" loop>
         <source src="music/happy-birthday.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="secretModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(4,1,12,0.9);z-index:10002;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:0.5s;cursor:pointer;">
-        <div style="background:var(--glass-bg);border-radius:18px;padding:2rem;border:1px solid rgba(180,140,220,0.5);max-width:350px;font-family:'Dancing Script',cursive;font-size:1.4rem;color:#d4bff0;text-align:center;">wait… you actually found this 😭<br>okay, you're nosy.<br>— Gokul 🤍</div>
+    <div id="secretModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(4,1,12,0.92);z-index:10002;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:0.5s;cursor:pointer;">
+        <div style="background:var(--glass-bg);border-radius:16px;padding:1.8rem;border:1px solid rgba(180,140,220,0.5);max-width:320px;font-family:'Dancing Script',cursive;font-size:1.3rem;color:#d4bff0;text-align:center;">wait… you actually found this 😭<br>okay, you're nosy.<br>— Gokul 🤍</div>
     </div>
 
     <script>
-        const CONFIG = {
-            wishes: [
-                { number: 1, title: 'Hold your hand', text: 'I wanna hold your hand and just walk around somewhere.' },
-                { number: 2, title: 'Movie night', text: 'I wanna watch a movie with you and probably talk through half of it 😭' },
-                { number: 3, title: 'Fix your hair', text: 'I wanna tie your hair for you.' },
-                { number: 4, title: 'Talk every day', text: 'I wanna talk to you even when we literally have nothing to talk about.' },
-                { number: 5, title: 'Meet you', text: 'I really wanna meet you.' },
-                { number: 6, title: 'Stay up talking', text: 'I wanna have those random conversations that somehow turn into hours.' },
-                { number: 7, title: 'Do dumb stuff', text: 'I wanna do dumb stuff with you and somehow turn it into a memory.' },
-                { number: 8, title: 'Don\'t disappear', text: 'I really don\'t wanna lose you.' },
-            ],
-            reasons: [
-                'Your laugh.', 'The way you tease me.', 'How excited you get about little things.',
-                'Your love for nature.', 'The sparkle in your eyes.', 'Your kindness.',
-                'How you sing when alone.', 'Your determination.', 'Making ordinary days special.',
-                'Your smile.', 'How deeply you care.', 'Your humor.', 'How you listen.',
-                'Your creativity.', 'Your bravery.', 'Your curiosity.', 'Honestly… just you.',
-            ],
-            music: "music/happy-birthday.mp3",
-        };
+        (function() {
+            'use strict';
 
-        const $ = (s) => document.querySelector(s);
-        const $$ = (s) => document.querySelectorAll(s);
+            const CONFIG = {
+                wishes: [
+                    { number: 1, title: 'Hold your hand', text: 'I wanna hold your hand and just walk around somewhere.' },
+                    { number: 2, title: 'Movie night', text: 'I wanna watch a movie with you and probably talk through half of it 😭' },
+                    { number: 3, title: 'Fix your hair', text: 'I wanna tie your hair for you.' },
+                    { number: 4, title: 'Talk every day', text: 'I wanna talk to you even when we literally have nothing to talk about.' },
+                    { number: 5, title: 'Meet you', text: 'I really wanna meet you.' },
+                    { number: 6, title: 'Stay up talking', text: 'I wanna have those random conversations that somehow turn into hours.' },
+                    { number: 7, title: 'Do dumb stuff', text: 'I wanna do dumb stuff with you and somehow turn it into a memory.' },
+                    { number: 8, title: "Don't disappear", text: "I really don't wanna lose you." },
+                ],
+                reasons: [
+                    'Your laugh.', 'The way you tease me.', 'How excited you get about little things.',
+                    'Your love for nature.', 'The sparkle in your eyes.', 'Your kindness.',
+                    'How you sing when alone.', 'Your determination.', 'Making ordinary days special.',
+                    'Your smile.', 'How deeply you care.', 'Your humor.', 'How you listen.',
+                    'Your creativity.', 'Your bravery.', 'Your curiosity.', 'Honestly… just you.',
+                ],
+                musicPath: 'music/happy-birthday.mp3',
+            };
 
-        const bgCanvas = $('#bgCanvas');
-        const bgCtx = bgCanvas.getContext('2d');
-        const fwCanvas = $('#fwCanvas');
-        const fwCtx = fwCanvas.getContext('2d');
-        let w, h;
-        const particles = [];
-        const fireworks = [];
+            const $ = (s) => document.querySelector(s);
+            const $$ = (s) => document.querySelectorAll(s);
+            const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window && window.innerWidth <= 1024);
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        const cdOverlay = $('#countdownOverlay');
-        const cdNumber = $('#cdNumber');
-        const cdSubtext = $('#cdSubtext');
-        const cdReveal = $('#cdReveal');
-        const cdButtonsRow = $('#cdButtonsRow');
-        const cdOpenBtn = $('#cdOpenBtn');
-        const cdNoBtn = $('#cdNoBtn');
-        const noMessage = $('#noMessage');
-        const mainContent = $('#mainContent');
-        const envelopeWrapper = $('.env-wrapper');
-        const env = $('.env');
-        const envFlap = $('.env-flap');
-        const envPeek = $('.env-letter-peek');
-        const envRay = $('.env-light-ray');
-        const letterPaper = $('#letterPaper');
-        const letterNextBtn = $('#letterNextBtn');
-        const wishesContainer = $('#wishesContainer');
-        const wishesFooter = $('#wishesFooter');
-        const wishesNextBtn = $('#wishesNextBtn');
-        const thingsGrid = $('#thingsGrid');
-        const thingsCounter = $('#thingsCounter');
-        const thingsFooter = $('#thingsFooter');
-        const thingsNextBtn = $('#thingsNextBtn');
-        const flowerScene = $('#flowerScene');
-        const btnContinue = $('#btnContinue');
-        const responseText = $('#responseText');
-        const questionNextBtn = $('#questionNextBtn');
-        const cakeWrap = $('#cakeWrap');
-        const clickMeLabel = $('#clickMeLabel');
-        const cakeWish = $('#cakeWish');
-        const cakeReveal = $('#cakeReveal');
-        const cakeNextBtn = $('#cakeNextBtn');
-        const startSeventeenBtn = $('#startSeventeenBtn');
-        const seventeenTimer = $('#seventeenTimer');
-        const seventeenCount = $('#seventeenCount');
-        const seventeenMessage = $('#seventeenMessage');
-        const seventeenNextBtn = $('#seventeenNextBtn');
-        const oneLastThing = $('#oneLastThing');
-        const openFinalBtn = $('#openFinalBtn');
-        const finalMessageContainer = $('#finalMessageContainer');
-        const musicFAB = $('#musicFAB');
-        const bgAudio = $('#bgAudio');
-        const secretStar = $('#secretStar');
-        const secretModal = $('#secretModal');
+            const bgCanvas = $('#bgCanvas');
+            const bgCtx = bgCanvas.getContext('2d');
+            const fwCanvas = $('#fwCanvas');
+            const fwCtx = fwCanvas.getContext('2d');
+            let w, h, dpr;
+            const particles = [];
+            const fireworks = [];
 
-        function resizeCanvases() {
-            w = bgCanvas.width = fwCanvas.width = window.innerWidth;
-            h = bgCanvas.height = fwCanvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvases);
-        resizeCanvases();
+            function resizeCanvases() {
+                dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
+                w = window.innerWidth;
+                h = window.innerHeight;
+                bgCanvas.width = w * dpr;
+                bgCanvas.height = h * dpr;
+                fwCanvas.width = w * dpr;
+                fwCanvas.height = h * dpr;
+                bgCanvas.style.width = w + 'px';
+                bgCanvas.style.height = h + 'px';
+                fwCanvas.style.width = w + 'px';
+                fwCanvas.style.height = h + 'px';
+                bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                fwCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                bgCtx.scale(1, 1);
+                fwCtx.scale(1, 1);
+            }
+            window.addEventListener('resize', resizeCanvases);
+            window.addEventListener('orientationchange', () => setTimeout(resizeCanvases, 300));
+            resizeCanvases();
 
-        for (let i = 0; i < 80; i++) {
-            particles.push({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                r: Math.random() * 2 + 0.5,
-                dx: (Math.random() - 0.5) * 0.3,
-                dy: (Math.random() - 0.5) * 0.3 - 0.2,
-                alpha: Math.random() * 0.5 + 0.2,
-            });
-        }
+            const particleCount = isMobile ? 35 : 80;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 2 + 0.5,
+                    dx: (Math.random() - 0.5) * 0.25,
+                    dy: (Math.random() - 0.5) * 0.25 - 0.15,
+                    alpha: Math.random() * 0.5 + 0.2,
+                });
+            }
 
-        let mouse = { x: -100, y: -100 };
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
+            let mouse = { x: -100, y: -100 };
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            }, { passive: true });
 
-        function drawBg() {
-            bgCtx.clearRect(0, 0, w, h);
-            for (let p of particles) {
-                p.x += p.dx;
-                p.y += p.dy;
-                if (p.x < -10) p.x = w + 10;
-                if (p.x > w + 10) p.x = -10;
-                if (p.y < -10) p.y = h + 10;
-                if (p.y > h + 10) p.y = -10;
-                bgCtx.fillStyle = `rgba(175,135,218,${p.alpha})`;
-                bgCtx.beginPath();
-                bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                bgCtx.fill();
-                if (p.r > 1.5) {
-                    bgCtx.fillStyle = `rgba(195,155,235,${p.alpha * 0.3})`;
+            function drawBg() {
+                bgCtx.clearRect(0, 0, w, h);
+                for (let p of particles) {
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    if (p.x < -10) p.x = w + 10;
+                    if (p.x > w + 10) p.x = -10;
+                    if (p.y < -10) p.y = h + 10;
+                    if (p.y > h + 10) p.y = -10;
+                    bgCtx.fillStyle = 'rgba(175,135,218,' + p.alpha + ')';
                     bgCtx.beginPath();
-                    bgCtx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
+                    bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    bgCtx.fill();
+                    if (p.r > 1.5 && !isMobile) {
+                        bgCtx.fillStyle = 'rgba(195,155,235,' + (p.alpha * 0.3) + ')';
+                        bgCtx.beginPath();
+                        bgCtx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
+                        bgCtx.fill();
+                    }
+                }
+                if (mouse.x > 0 && mouse.y > 0 && !isMobile) {
+                    const grad = bgCtx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 80);
+                    grad.addColorStop(0, 'rgba(180,140,220,0.1)');
+                    grad.addColorStop(1, 'rgba(180,140,220,0)');
+                    bgCtx.fillStyle = grad;
+                    bgCtx.beginPath();
+                    bgCtx.arc(mouse.x, mouse.y, 80, 0, Math.PI * 2);
                     bgCtx.fill();
                 }
+                fwCtx.clearRect(0, 0, w, h);
+                for (let i = fireworks.length - 1; i >= 0; i--) {
+                    const f = fireworks[i];
+                    f.x += f.vx;
+                    f.y += f.vy;
+                    f.vy += 0.04;
+                    f.life -= 0.015;
+                    if (f.life <= 0) { fireworks.splice(i, 1); continue; }
+                    fwCtx.fillStyle = 'rgba(' + f.r + ',' + f.g + ',' + f.b + ',' + f.life + ')';
+                    fwCtx.beginPath();
+                    fwCtx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+                    fwCtx.fill();
+                }
+                requestAnimationFrame(drawBg);
             }
-            if (mouse.x > 0 && mouse.y > 0) {
-                const gradient = bgCtx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 80);
-                gradient.addColorStop(0, 'rgba(180,140,220,0.1)');
-                gradient.addColorStop(1, 'rgba(180,140,220,0)');
-                bgCtx.fillStyle = gradient;
-                bgCtx.beginPath();
-                bgCtx.arc(mouse.x, mouse.y, 80, 0, Math.PI * 2);
-                bgCtx.fill();
+            if (!reducedMotion) {
+                drawBg();
+            } else {
+                bgCtx.fillStyle = '#080114';
+                bgCtx.fillRect(0, 0, w, h);
             }
-            fwCtx.clearRect(0, 0, w, h);
-            for (let i = fireworks.length - 1; i >= 0; i--) {
-                const f = fireworks[i];
-                f.x += f.vx;
-                f.y += f.vy;
-                f.vy += 0.04;
-                f.life -= 0.015;
-                if (f.life <= 0) { fireworks.splice(i, 1); continue; }
-                fwCtx.fillStyle = `rgba(${f.r},${f.g},${f.b},${f.life})`;
-                fwCtx.beginPath();
-                fwCtx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
-                fwCtx.fill();
+
+            function spawnFireworks(cx, cy, count) {
+                count = isMobile ? Math.floor(count * 0.5) : count;
+                for (let i = 0; i < count; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 7 + 3;
+                    fireworks.push({
+                        x: cx,
+                        y: cy,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed - 2,
+                        size: Math.random() * 3 + 1,
+                        life: Math.random() * 0.7 + 0.4,
+                        r: 180 + Math.floor(Math.random() * 75),
+                        g: 100 + Math.floor(Math.random() * 80),
+                        b: 200 + Math.floor(Math.random() * 55),
+                    });
+                }
             }
-            requestAnimationFrame(drawBg);
-        }
-        drawBg();
 
-        function spawnFireworks(cx, cy, count = 60) {
-            for (let i = 0; i < count; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 7 + 3;
-                fireworks.push({
-                    x: cx,
-                    y: cy,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed - 2,
-                    size: Math.random() * 3.5 + 1.2,
-                    life: Math.random() * 0.7 + 0.45,
-                    r: 180 + Math.floor(Math.random() * 75),
-                    g: 100 + Math.floor(Math.random() * 80),
-                    b: 200 + Math.floor(Math.random() * 55),
-                });
+            function spawnConfetti(count) {
+                count = isMobile ? Math.floor(count * 0.6) : count;
+                const colors = ['#d4bff0', '#b794d9', '#9b6dc2', '#f0e8f8', '#c9a0f0', '#e8c8ff', '#a070d0', '#d4af6e'];
+                for (let i = 0; i < count; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'confetti-piece';
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.top = -(Math.random() * 50 + 6) + 'px';
+                    el.style.width = (Math.random() * 8 + 3) + 'px';
+                    el.style.height = (Math.random() * 8 + 3) + 'px';
+                    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    el.style.setProperty('--fall-time', (Math.random() * 2 + 2) + 's');
+                    el.style.setProperty('--drift', (Math.random() * 250 - 125) + 'px');
+                    el.style.setProperty('--rot', (Math.random() * 650 - 325) + 'deg');
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 3500);
+                }
             }
-        }
 
-        function spawnConfetti(count = 70) {
-            const colors = ['#d4bff0', '#b794d9', '#9b6dc2', '#f0e8f8', '#c9a0f0', '#e8c8ff', '#a070d0', '#d4af6e'];
-            for (let i = 0; i < count; i++) {
-                const el = document.createElement('div');
-                el.className = 'confetti-piece';
-                el.style.left = Math.random() * 100 + 'vw';
-                el.style.top = -(Math.random() * 55 + 8) + 'px';
-                el.style.width = (Math.random() * 9 + 4) + 'px';
-                el.style.height = (Math.random() * 9 + 4) + 'px';
-                el.style.background = colors[Math.floor(Math.random() * colors.length)];
-                el.style.setProperty('--fall-time', (Math.random() * 2.2 + 2.3) + 's');
-                el.style.setProperty('--drift', (Math.random() * 280 - 140) + 'px');
-                el.style.setProperty('--rot', (Math.random() * 700 - 350) + 'deg');
-                document.body.appendChild(el);
-                setTimeout(() => el.remove(), 3800);
+            function spawnCdParticles(cx, cy, count) {
+                count = isMobile ? Math.floor(count * 0.6) : count;
+                for (let i = 0; i < count; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'cd-particle';
+                    el.style.left = (cx + (Math.random() - 0.5) * 200) + 'px';
+                    el.style.top = (cy + (Math.random() - 0.5) * 140) + 'px';
+                    el.style.width = (Math.random() * 4 + 2) + 'px';
+                    el.style.height = el.style.width;
+                    el.style.animationDuration = (Math.random() * 1.4 + 1.1) + 's';
+                    el.style.background = Math.random() > 0.5 ? '#d4bff0' : '#b794d9';
+                    cdOverlay.appendChild(el);
+                    setTimeout(() => el.remove(), 2600);
+                }
             }
-        }
 
-        function spawnCdParticles(cx, cy, count = 30) {
-            for (let i = 0; i < count; i++) {
-                const el = document.createElement('div');
-                el.className = 'cd-particle';
-                el.style.left = (cx + (Math.random() - 0.5) * 220) + 'px';
-                el.style.top = (cy + (Math.random() - 0.5) * 160) + 'px';
-                el.style.width = (Math.random() * 5 + 2) + 'px';
-                el.style.height = el.style.width;
-                el.style.animationDuration = (Math.random() * 1.6 + 1.3) + 's';
-                el.style.background = Math.random() > 0.5 ? '#d4bff0' : '#b794d9';
-                cdOverlay.appendChild(el);
-                setTimeout(() => el.remove(), 2800);
+            function unlockSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (!section) return;
+                if (!section.classList.contains('locked')) return;
+                section.classList.remove('locked');
+                section.classList.add('unlocked');
+                if (window.gsap) {
+                    gsap.fromTo(section, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+                }
+                if (typeof ScrollTrigger !== 'undefined') {
+                    setTimeout(() => ScrollTrigger.refresh(), 100);
+                }
             }
-        }
 
-        function unlockSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (!section) return;
-            if (!section.classList.contains('locked')) return;
-            section.classList.remove('locked');
-            section.classList.add('unlocked');
-            gsap.fromTo(section, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
-            if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-        }
+            function scrollToSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+                }
+            }
 
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) section.scrollIntoView({ behavior: 'smooth' });
-        }
+            function unlockAndGoTo(sectionId) {
+                unlockSection(sectionId);
+                setTimeout(() => scrollToSection(sectionId), 150);
+            }
 
-        function unlockAndGoTo(sectionId) {
-            unlockSection(sectionId);
-            setTimeout(() => scrollToSection(sectionId), 100);
-        }
+            const cdOverlay = $('#countdownOverlay');
+            const cdNumber = $('#cdNumber');
+            const cdSubtext = $('#cdSubtext');
+            const cdReveal = $('#cdReveal');
+            const cdButtonsRow = $('#cdButtonsRow');
+            const cdOpenBtn = $('#cdOpenBtn');
+            const cdNoBtn = $('#cdNoBtn');
+            const noMessage = $('#noMessage');
+            const mainContent = $('#mainContent');
+            const envWrapper = $('#envWrapper');
+            const envEl = $('#envEl');
+            const envFlap = $('#envFlap');
+            const envPeek = $('#envPeek');
+            const envRay = $('#envRay');
+            const envHint = $('#envHint');
+            const letterPaper = $('#letterPaper');
+            const letterNextBtn = $('#letterNextBtn');
+            const wishesContainer = $('#wishesContainer');
+            const wishesFooter = $('#wishesFooter');
+            const wishesNextBtn = $('#wishesNextBtn');
+            const thingsGrid = $('#thingsGrid');
+            const thingsCounter = $('#thingsCounter');
+            const thingsFooter = $('#thingsFooter');
+            const thingsNextBtn = $('#thingsNextBtn');
+            const flowerScene = $('#flowerScene');
+            const btnContinue = $('#btnContinue');
+            const responseText = $('#responseText');
+            const questionNextBtn = $('#questionNextBtn');
+            const cakeWrap = $('#cakeWrap');
+            const clickMeLabel = $('#clickMeLabel');
+            const cakeWish = $('#cakeWish');
+            const cakeReveal = $('#cakeReveal');
+            const cakeNextBtn = $('#cakeNextBtn');
+            const startSeventeenBtn = $('#startSeventeenBtn');
+            const seventeenTimer = $('#seventeenTimer');
+            const seventeenCount = $('#seventeenCount');
+            const seventeenMessage = $('#seventeenMessage');
+            const seventeenNextBtn = $('#seventeenNextBtn');
+            const oneLastThing = $('#oneLastThing');
+            const openFinalBtn = $('#openFinalBtn');
+            const finalMessageContainer = $('#finalMessageContainer');
+            const musicFAB = $('#musicFAB');
+            const bgAudio = $('#bgAudio');
+            const secretStar = $('#secretStar');
+            const secretModal = $('#secretModal');
 
-        let noAnimating = false;
+            let noAnimating = false;
 
-        function showCdNum(num, cb) {
-            cdNumber.textContent = num;
-            gsap.fromTo(cdNumber, { scale: 3, opacity: 0, filter: 'blur(10px)' }, {
-                scale: 1,
-                opacity: 1,
-                filter: 'blur(0px)',
-                duration: 0.8,
-                ease: 'power2.out',
-                onComplete: () => {
-                    gsap.to(cdNumber, { opacity: 0.4, filter: 'blur(3px)', duration: 0.3, delay: 0.1 });
+            function showCdNum(num, cb) {
+                cdNumber.textContent = num;
+                if (window.gsap && !reducedMotion) {
+                    gsap.fromTo(cdNumber, { scale: 3, opacity: 0, filter: 'blur(10px)' }, {
+                        scale: 1,
+                        opacity: 1,
+                        filter: 'blur(0px)',
+                        duration: 0.8,
+                        ease: 'power2.out',
+                        onComplete: () => {
+                            gsap.to(cdNumber, { opacity: 0.4, filter: 'blur(3px)', duration: 0.3, delay: 0.1 });
+                            if (cb) setTimeout(cb, 900);
+                        }
+                    });
+                } else {
+                    cdNumber.style.opacity = 1;
                     if (cb) setTimeout(cb, 900);
                 }
-            });
-            spawnCdParticles(window.innerWidth / 2, window.innerHeight / 2, 20);
-        }
+                spawnCdParticles(window.innerWidth / 2, window.innerHeight / 2, 18);
+            }
 
-        // ─── FIX: "Happy Birthday Elena" now appears on ONE LINE ───
-        function animateHappyText(callback) {
-            const bigText = document.createElement('div');
-            bigText.id = 'bigHappy';
-            bigText.style.cssText = `
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                z-index: 10002;
-                text-align: center;
-                pointer-events: none;
-            `;
-            cdOverlay.appendChild(bigText);
+            function animateHappyText(callback) {
+                const bigText = document.createElement('div');
+                bigText.id = 'bigHappy';
+                bigText.style.cssText =
+                    'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10002;text-align:center;pointer-events:none;padding:0 0.5rem;';
+                cdOverlay.appendChild(bigText);
 
-            // Single line: "Happy Birthday Elena"
-            const fullText = 'Happy Birthday Elena';
-            const span = document.createElement('span');
-            span.style.display = 'block';
-            span.style.fontFamily = "'Dancing Script', cursive";
-            span.style.fontSize = 'clamp(3rem, 12vw, 6rem)';
-            span.style.color = '#f0e8f8';
-            span.style.textShadow = '0 0 30px #b794d9, 0 0 60px #6b3fa0';
-            span.style.whiteSpace = 'nowrap';
-            span.innerHTML = fullText.split('').map(ch =>
-                `<span class="happy-text-char">${ch}</span>`
-            ).join('');
+                const fullText = 'Happy Birthday Elena';
+                const span = document.createElement('span');
+                span.style.display = 'block';
+                span.style.fontFamily = "'Dancing Script', cursive";
+                span.style.fontSize = 'clamp(2.2rem, 8vw, 5.5rem)';
+                span.style.color = '#f0e8f8';
+                span.style.textShadow = '0 0 30px #b794d9, 0 0 60px #6b3fa0';
+                span.style.whiteSpace = 'nowrap';
+                span.style.letterSpacing = '0.05em';
+                span.innerHTML = fullText.split('').map(ch =>
+                    '<span class="happy-text-char">' + ch + '</span>'
+                ).join('');
+                bigText.appendChild(span);
 
-            bigText.appendChild(span);
+                const chars = bigText.querySelectorAll('.happy-text-char');
 
-            const chars = bigText.querySelectorAll('.happy-text-char');
-            gsap.to(chars, {
-                opacity: 1,
-                y: 0,
-                rotateX: 0,
-                duration: 0.6,
-                stagger: 0.06,
-                ease: 'back.out(2)',
-                delay: 0.2,
-                onComplete: () => {
-                    const sparkInterval = setInterval(() => {
-                        spawnFireworks(w / 2 + (Math.random() - 0.5) * 300, h / 2 + (Math.random() - 0.5) *
-                            200, 10);
-                    }, 300);
-                    setTimeout(() => clearInterval(sparkInterval), 2000);
-                }
-            });
-
-            setTimeout(() => {
-                gsap.to(chars, {
-                    opacity: 0,
-                    y: -30,
-                    duration: 0.5,
-                    stagger: 0.03,
-                    onComplete: () => {
+                if (window.gsap && !reducedMotion) {
+                    gsap.to(chars, {
+                        opacity: 1,
+                        y: 0,
+                        rotateX: 0,
+                        duration: 0.55,
+                        stagger: 0.055,
+                        ease: 'back.out(2)',
+                        delay: 0.15,
+                        onComplete: () => {
+                            const sparkInterval = setInterval(() => {
+                                spawnFireworks(w / 2 + (Math.random() - 0.5) * 280, h / 2 + (Math.random() - 0.5) *
+                                    180, 8);
+                            }, 350);
+                            setTimeout(() => clearInterval(sparkInterval), 1800);
+                        }
+                    });
+                    setTimeout(() => {
+                        gsap.to(chars, {
+                            opacity: 0,
+                            y: -28,
+                            duration: 0.45,
+                            stagger: 0.025,
+                            onComplete: () => {
+                                bigText.remove();
+                                if (callback) callback();
+                            }
+                        });
+                    }, 2300);
+                } else {
+                    chars.forEach(ch => { ch.style.opacity = 1;
+                        ch.style.transform = 'none'; });
+                    setTimeout(() => {
                         bigText.remove();
                         if (callback) callback();
-                    }
-                });
-            }, 2500);
-        }
+                    }, 2300);
+                }
+            }
 
-        function startCountdown() {
-            showCdNum(3, () => {
-                showCdNum(2, () => {
-                    showCdNum(1, () => {
-                        cdNumber.textContent = '';
-                        gsap.to(cdNumber, { opacity: 0, duration: 0.3 });
-                        animateHappyText(() => {
-                            cdReveal.innerHTML = 'okay… I made something for you 😭💜';
-                            gsap.to(cdReveal, { opacity: 1, duration: 1, delay: 0.3 });
-                            setTimeout(() => {
-                                cdReveal.innerHTML = 'I hope you like it.';
-                                gsap.to(cdButtonsRow, { opacity: 1, pointerEvents: 'auto',
-                                    duration: 0.8 });
-                                cdOpenBtn.style.animation = 'clickMePulse 2.2s infinite';
-                            }, 1800);
+            function startCountdown() {
+                showCdNum(3, () => {
+                    showCdNum(2, () => {
+                        showCdNum(1, () => {
+                            cdNumber.textContent = '';
+                            cdNumber.style.opacity = 0;
+                            animateHappyText(() => {
+                                cdReveal.innerHTML = 'okay… I made something for you 😭💜';
+                                cdReveal.style.opacity = 1;
+                                setTimeout(() => {
+                                    cdReveal.innerHTML = 'I hope you like it.';
+                                    cdButtonsRow.style.opacity = 1;
+                                    cdButtonsRow.style.pointerEvents = 'auto';
+                                    cdOpenBtn.style.animation = 'clickMePulse 2.2s infinite';
+                                }, 1600);
+                            });
                         });
                     });
                 });
-            });
-        }
-        startCountdown();
+            }
+            startCountdown();
 
-        cdOpenBtn.addEventListener('click', () => {
-            gsap.to(cdOverlay, {
-                opacity: 0,
-                duration: 0.8,
-                onComplete: () => {
+            cdOpenBtn.addEventListener('click', function() {
+                cdOverlay.style.transition = 'opacity 0.8s';
+                cdOverlay.style.opacity = 0;
+                setTimeout(() => {
                     cdOverlay.classList.add('hidden');
                     document.body.style.overflow = '';
-                }
+                }, 800);
+                mainContent.style.opacity = 1;
+                setTimeout(() => scrollToSection('envelopeSection'), 500);
             });
-            mainContent.style.opacity = 1;
-            setTimeout(() => scrollToSection('envelopeSection'), 500);
-        });
+            cdOpenBtn.addEventListener('touchend', function(e) { e.preventDefault();
+                cdOpenBtn.click(); });
 
-        cdNoBtn.addEventListener('click', () => {
-            if (noAnimating) return;
-            noAnimating = true;
-            noMessage.textContent = 'BRO 😭';
-            noMessage.style.opacity = 1;
-            gsap.fromTo(noMessage, { opacity: 0, scale: 0.5, rotation: -8, y: 0 }, {
-                opacity: 1,
-                scale: 1,
-                rotation: 0,
-                duration: 0.6,
-                ease: 'back.out(1.7)',
-                onComplete: () => {
-                    noMessage.textContent = 'HOW DARE YOU SAY NO 😤💢';
-                    gsap.fromTo(cdOverlay, { x: 0, y: 0, rotation: 0 }, {
-                        x: 8,
-                        y: -5,
-                        rotation: 1.5,
-                        duration: 0.08,
-                        yoyo: true,
-                        repeat: 3,
-                        ease: 'power1.inOut',
-                        onComplete: () => gsap.to(cdOverlay, { x: 0, y: 0, rotation: 0,
-                            duration: 0.2 })
+            cdNoBtn.addEventListener('click', function() {
+                if (noAnimating) return;
+                noAnimating = true;
+                noMessage.textContent = 'BRO 😭';
+                noMessage.style.opacity = 1;
+                if (window.gsap && !reducedMotion) {
+                    gsap.fromTo(noMessage, { opacity: 0, scale: 0.5, rotation: -8, y: 0 }, {
+                        opacity: 1,
+                        scale: 1,
+                        rotation: 0,
+                        duration: 0.6,
+                        ease: 'back.out(1.7)',
+                        onComplete: () => {
+                            noMessage.textContent = 'HOW DARE YOU SAY NO 😤💢';
+                            gsap.fromTo(cdOverlay, { x: 0, y: 0, rotation: 0 }, {
+                                x: 8,
+                                y: -5,
+                                rotation: 1.5,
+                                duration: 0.08,
+                                yoyo: true,
+                                repeat: 3,
+                                ease: 'power1.inOut',
+                                onComplete: () => gsap.to(cdOverlay, { x: 0, y: 0,
+                                    rotation: 0, duration: 0.2 })
+                            });
+                            spawnAngryBurst();
+                            setTimeout(() => { noAnimating = false; }, 2400);
+                        }
                     });
+                } else {
+                    noMessage.textContent = 'HOW DARE YOU SAY NO 😤💢';
                     spawnAngryBurst();
-                    setTimeout(() => { noAnimating = false; }, 2500);
+                    setTimeout(() => { noAnimating = false; }, 2400);
                 }
             });
-        });
+            cdNoBtn.addEventListener('touchend', function(e) { e.preventDefault();
+                cdNoBtn.click(); });
 
-        function spawnAngryBurst() {
-            const emojis = ['😤', '💢', '💜', '😤', '💢', '😡', '💜'];
-            const cx = window.innerWidth / 2;
-            const cy = window.innerHeight / 2;
-            for (let i = 0; i < 15; i++) {
-                const span = document.createElement('span');
-                span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                span.style.position = 'absolute';
-                span.style.fontSize = '1.5rem';
-                span.style.left = (cx + (Math.random() - 0.5) * 200) + 'px';
-                span.style.top = (cy + (Math.random() - 0.5) * 150) + 'px';
-                cdOverlay.appendChild(span);
-                gsap.fromTo(span, { opacity: 1, scale: 0.5 }, {
-                    opacity: 0,
-                    scale: 1.8,
-                    x: (Math.random() - 0.5) * 200,
-                    y: (Math.random() - 0.5) * 200,
-                    duration: 1.2,
-                    ease: 'power2.out',
-                    onComplete: () => span.remove()
+            function spawnAngryBurst() {
+                const emojis = ['😤', '💢', '💜', '😤', '💢', '😡', '💜'];
+                const cx = window.innerWidth / 2;
+                const cy = window.innerHeight / 2;
+                const cnt = isMobile ? 8 : 15;
+                for (let i = 0; i < cnt; i++) {
+                    const span = document.createElement('span');
+                    span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    span.style.position = 'absolute';
+                    span.style.fontSize = '1.3rem';
+                    span.style.left = (cx + (Math.random() - 0.5) * 180) + 'px';
+                    span.style.top = (cy + (Math.random() - 0.5) * 130) + 'px';
+                    cdOverlay.appendChild(span);
+                    if (window.gsap) {
+                        gsap.fromTo(span, { opacity: 1, scale: 0.5 }, {
+                            opacity: 0,
+                            scale: 1.8,
+                            x: (Math.random() - 0.5) * 180,
+                            y: (Math.random() - 0.5) * 180,
+                            duration: 1.1,
+                            ease: 'power2.out',
+                            onComplete: () => span.remove()
+                        });
+                    } else {
+                        setTimeout(() => span.remove(), 1000);
+                    }
+                }
+            }
+
+            let envelopeOpened = false;
+
+            function openEnvelope() {
+                if (envelopeOpened) return;
+                envelopeOpened = true;
+                envHint.innerHTML = 'wait… 😭';
+                if (window.gsap && !reducedMotion) {
+                    gsap.to(envEl, { rotateX: -6, y: -12, duration: 0.7, ease: 'power2.out' });
+                    gsap.to(envFlap, { rotateX: 178, duration: 0.75, ease: 'power2.out',
+                        boxShadow: '0 12px 35px rgba(0,0,0,0.55)' });
+                    gsap.to(envPeek, { opacity: 1, y: -22, duration: 0.7, ease: 'power2.out' });
+                    gsap.to(envRay, { height: 120, duration: 0.9, ease: 'power2.out' });
+                } else {
+                    envFlap.style.transform = 'rotateX(178deg)';
+                    envPeek.style.opacity = 1;
+                    envRay.style.height = '120px';
+                }
+                const rect = envWrapper.getBoundingClientRect();
+                spawnCdParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 12);
+                setTimeout(() => {
+                    envHint.innerHTML = 'okay, read this 😭';
+                    unlockAndGoTo('letterSection');
+                    const ps = letterPaper.querySelectorAll('p');
+                    ps.forEach((p, i) => {
+                        setTimeout(() => p.classList.add('revealed'), 250 + i * 100);
+                    });
+                }, 1400);
+            }
+            envWrapper.addEventListener('click', openEnvelope);
+            envWrapper.addEventListener('touchend', function(e) { e.preventDefault();
+                openEnvelope(); });
+
+            letterNextBtn.addEventListener('click', function() {
+                unlockAndGoTo('wishesSection');
+                buildWishes();
+            });
+            letterNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
+                letterNextBtn.click(); });
+
+            let wishesOpenedCount = 0;
+
+            function buildWishes() {
+                if (wishesContainer.children.length > 0) return;
+                CONFIG.wishes.forEach((wish, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'wish-card';
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
+                    card.innerHTML =
+                        '<span class="wish-number">' + String(wish.number).padStart(2, '0') +
+                        '</span>' +
+                        '<span class="wish-title">' + wish.title + '</span>' +
+                        '<div class="wish-text">' + wish.text + '</div>' +
+                        '<span class="wish-arrow">▼</span>';
+                    card.addEventListener('click', function() {
+                        if (!card.classList.contains('open')) {
+                            card.classList.add('open');
+                            wishesOpenedCount++;
+                            if (wishesOpenedCount >= CONFIG.wishes.length) {
+                                wishesFooter.style.opacity = 1;
+                                wishesNextBtn.style.display = 'inline-block';
+                            }
+                        }
+                    });
+                    wishesContainer.appendChild(card);
+                    if (window.gsap && !reducedMotion) {
+                        gsap.fromTo(card, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.4,
+                            delay: 0.08 + idx * 0.07, ease: 'power2.out' });
+                    }
                 });
             }
-        }
 
-        let envelopeOpened = false;
-        envelopeWrapper.addEventListener('click', () => {
-            if (envelopeOpened) return;
-            envelopeOpened = true;
-            document.querySelector('.env-hint').innerHTML = 'wait… 😭';
-            gsap.to(env, { rotateX: -6, y: -12, duration: 0.7, ease: 'power2.out' });
-            gsap.to(envFlap, { rotateX: 178, duration: 0.75, ease: 'power2.out', boxShadow: '0 12px 35px rgba(0,0,0,0.55)' });
-            gsap.to(envPeek, { opacity: 1, y: -22, duration: 0.7, ease: 'power2.out' });
-            gsap.to(envRay, { height: 120, duration: 0.9, ease: 'power2.out' });
-            const rect = envelopeWrapper.getBoundingClientRect();
-            spawnCdParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 15);
-            setTimeout(() => {
-                document.querySelector('.env-hint').innerHTML = 'okay, read this 😭';
-                unlockAndGoTo('letterSection');
-                const ps = letterPaper.querySelectorAll('p');
-                ps.forEach((p, i) => {
-                    setTimeout(() => p.classList.add('revealed'), 300 + i * 120);
-                });
-            }, 1500);
-        });
+            wishesNextBtn.addEventListener('click', function() {
+                unlockAndGoTo('thingsSection');
+                buildThings();
+            });
+            wishesNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
+                wishesNextBtn.click(); });
 
-        letterNextBtn.addEventListener('click', () => {
-            unlockAndGoTo('wishesSection');
-            buildWishes();
-        });
+            let flippedCount = 0;
 
-        let wishesOpenedCount = 0;
-
-        function buildWishes() {
-            if (wishesContainer.children.length > 0) return;
-            CONFIG.wishes.forEach(wish => {
-                const card = document.createElement('div');
-                card.className = 'wish-card';
-                card.innerHTML = `
-                    <span class="wish-number">${String(wish.number).padStart(2,'0')}</span>
-                    <span class="wish-title">${wish.title}</span>
-                    <div class="wish-text">${wish.text}</div>
-                    <span class="wish-arrow">▼</span>
-                `;
-                card.addEventListener('click', () => {
-                    if (!card.classList.contains('open')) {
-                        card.classList.add('open');
-                        wishesOpenedCount++;
-                        if (wishesOpenedCount >= CONFIG.wishes.length) {
-                            wishesFooter.style.opacity = 1;
-                            wishesNextBtn.style.display = 'inline-block';
+            function buildThings() {
+                if (thingsGrid.children.length > 0) return;
+                CONFIG.reasons.forEach((reason, i) => {
+                    const card = document.createElement('div');
+                    card.className = 'thing-card';
+                    card.style.aspectRatio = '1';
+                    card.style.perspective = '700px';
+                    card.style.animationDelay = (i * 0.04) + 's';
+                    card.innerHTML =
+                        '<div class="thing-inner">' +
+                        '<div class="thing-front">' + String(i + 1).padStart(2, '0') + '</div>' +
+                        '<div class="thing-back">' + reason + '</div>' +
+                        '</div>';
+                    card.addEventListener('click', function() {
+                        if (!card.classList.contains('flipped')) {
+                            card.classList.add('flipped');
+                            const inner = card.querySelector('.thing-inner');
+                            if (window.gsap && !reducedMotion) {
+                                gsap.to(inner, { rotateY: 180, duration: 0.5, ease: 'back.out(1.4)' });
+                            } else {
+                                inner.style.transform = 'rotateY(180deg)';
+                            }
+                            flippedCount++;
+                            thingsCounter.textContent = flippedCount + ' / 17 discovered';
+                            if (flippedCount >= CONFIG.reasons.length) {
+                                thingsFooter.style.opacity = 1;
+                                thingsNextBtn.style.display = 'inline-block';
+                            }
                         }
-                    }
+                    });
+                    thingsGrid.appendChild(card);
                 });
-                wishesContainer.appendChild(card);
-                gsap.fromTo(card, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.4, delay: 0.1 + CONFIG.wishes
-                        .indexOf(wish) * 0.08, ease: 'power2.out' });
+            }
+
+            thingsNextBtn.addEventListener('click', function() {
+                unlockAndGoTo('flowerSection');
+                startFlowerAnimation();
             });
-        }
+            thingsNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
+                thingsNextBtn.click(); });
 
-        wishesNextBtn.addEventListener('click', () => {
-            unlockAndGoTo('thingsSection');
-            buildThings();
-        });
+            let flowerAnimationStarted = false;
 
-        let flippedCount = 0;
+            function startFlowerAnimation() {
+                if (flowerAnimationStarted) return;
+                flowerAnimationStarted = true;
 
-        function buildThings() {
-            if (thingsGrid.children.length > 0) return;
-            CONFIG.reasons.forEach((reason, i) => {
-                const card = document.createElement('div');
-                card.className = 'thing-card';
-                card.style.aspectRatio = '1';
-                card.style.perspective = '700px';
-                card.style.animationDelay = (i * 0.05) + 's';
-                card.innerHTML = `
-                    <div class="thing-inner" style="width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.55s;">
-                      <div class="thing-front" style="position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;background:linear-gradient(135deg,#2a1050,#3d1a6e);border:1.5px solid rgba(180,140,220,0.4);display:flex;align-items:center;justify-content:center;color:#d4bff0;font-family:'Playfair Display',serif;font-size:1.5rem;">${String(i+1).padStart(2,'0')}</div>
-                      <div class="thing-back" style="position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;background:linear-gradient(135deg,#4b2380,#331860);transform:rotateY(180deg);display:flex;align-items:center;justify-content:center;color:#f0e8f8;font-size:0.8rem;padding:0.4rem;text-align:center;">${reason}</div>
-                    </div>`;
-                card.addEventListener('click', () => {
-                    if (!card.classList.contains('flipped')) {
-                        card.classList.add('flipped');
-                        gsap.to(card.querySelector('.thing-inner'), { rotateY: 180, duration: 0.55,
-                            ease: 'back.out(1.4)' });
-                        flippedCount++;
-                        thingsCounter.textContent = `${flippedCount} / 17 discovered`;
-                        if (flippedCount >= CONFIG.reasons.length) {
-                            thingsFooter.style.opacity = 1;
-                            thingsNextBtn.style.display = 'inline-block';
-                        }
-                    }
-                });
-                thingsGrid.appendChild(card);
-            });
-        }
+                const scene = flowerScene;
+                const soil = scene.querySelector('.soil');
+                scene.innerHTML = '';
+                scene.appendChild(soil);
 
-        thingsNextBtn.addEventListener('click', () => {
-            unlockAndGoTo('flowerSection');
-            startFlowerAnimation();
-        });
+                const sw = Math.min(scene.clientWidth || 320, 420);
+                const scaleFactor = sw / 420;
 
-        let flowerAnimationStarted = false;
+                const sunflowerPositions = [
+                    { left: '18%', height: 140 * scaleFactor, size: 40 * scaleFactor },
+                    { left: '70%', height: 160 * scaleFactor, size: 45 * scaleFactor },
+                    { left: '85%', height: 130 * scaleFactor, size: 38 * scaleFactor },
+                    { left: '32%', height: 150 * scaleFactor, size: 42 * scaleFactor },
+                ];
+                const jasminePositions = [
+                    { left: '10%', height: 100 * scaleFactor, size: 28 * scaleFactor },
+                    { left: '50%', height: 110 * scaleFactor, size: 30 * scaleFactor },
+                    { left: '65%', height: 95 * scaleFactor, size: 26 * scaleFactor },
+                    { left: '80%', height: 105 * scaleFactor, size: 29 * scaleFactor },
+                    { left: '15%', height: 85 * scaleFactor, size: 25 * scaleFactor },
+                    { left: '40%', height: 90 * scaleFactor, size: 27 * scaleFactor },
+                ];
 
-        function startFlowerAnimation() {
-            if (flowerAnimationStarted) return;
-            flowerAnimationStarted = true;
-
-            const scene = flowerScene;
-            const soil = scene.querySelector('.soil');
-            scene.innerHTML = '';
-            scene.appendChild(soil);
-
-            const sunflowerPositions = [
-                { left: '18%', height: 140, size: 40 },
-                { left: '70%', height: 160, size: 45 },
-                { left: '85%', height: 130, size: 38 },
-                { left: '32%', height: 150, size: 42 },
-            ];
-            const jasminePositions = [
-                { left: '10%', height: 100, size: 28 },
-                { left: '50%', height: 110, size: 30 },
-                { left: '65%', height: 95, size: 26 },
-                { left: '80%', height: 105, size: 29 },
-                { left: '15%', height: 85, size: 25 },
-                { left: '40%', height: 90, size: 27 },
-            ];
-
-            sunflowerPositions.forEach((pos, i) => {
-                const plant = document.createElement('div');
-                plant.className = 'plant';
-                plant.style.left = pos.left;
-                plant.style.bottom = '20px';
-                plant.style.width = '5px';
-                plant.style.height = '0';
-                plant.style.zIndex = '1';
-                scene.appendChild(plant);
-
-                const stem = document.createElement('div');
-                stem.className = 'flower-stem';
-                stem.style.left = '50%';
-                stem.style.bottom = '0';
-                stem.style.height = '100%';
-                plant.appendChild(stem);
-
-                const flower = document.createElement('div');
-                flower.className = 'sunflower';
-                flower.style.left = '50%';
-                flower.style.top = '0';
-                flower.style.width = pos.size + 'px';
-                flower.style.height = pos.size + 'px';
-                flower.style.position = 'absolute';
-                flower.style.transform = 'translate(-50%, -50%)';
-                flower.style.opacity = '0';
-                plant.appendChild(flower);
-
-                for (let p = 0; p < 8; p++) {
-                    const petal = document.createElement('div');
-                    petal.className = 'petal';
-                    petal.style.width = (pos.size * 0.3) + 'px';
-                    petal.style.height = (pos.size * 0.3) + 'px';
-                    petal.style.transform =
-                        `translate(-50%, -50%) rotate(${p * 45}deg) translateY(-${pos.size * 0.55}px)`;
-                    petal.style.position = 'absolute';
-                    petal.style.top = '50%';
-                    petal.style.left = '50%';
-                    flower.appendChild(petal);
-                }
-                const disk = document.createElement('div');
-                disk.className = 'center-disk';
-                disk.style.width = (pos.size * 0.4) + 'px';
-                disk.style.height = (pos.size * 0.4) + 'px';
-                disk.style.position = 'absolute';
-                disk.style.top = '50%';
-                disk.style.left = '50%';
-                flower.appendChild(disk);
-
-                const leaf1 = document.createElement('div');
-                leaf1.className = 'leaf';
-                leaf1.style.left = '20%';
-                leaf1.style.bottom = '30%';
-                leaf1.style.position = 'absolute';
-                leaf1.style.transformOrigin = 'left center';
-                leaf1.style.transform = 'scaleX(0)';
-                plant.appendChild(leaf1);
-                const leaf2 = document.createElement('div');
-                leaf2.className = 'leaf';
-                leaf2.style.left = '80%';
-                leaf2.style.bottom = '60%';
-                leaf2.style.position = 'absolute';
-                leaf2.style.transformOrigin = 'right center';
-                leaf2.style.transform = 'scaleX(0)';
-                plant.appendChild(leaf2);
-            });
-
-            jasminePositions.forEach((pos, i) => {
-                const plant = document.createElement('div');
-                plant.className = 'plant';
-                plant.style.left = pos.left;
-                plant.style.bottom = '20px';
-                plant.style.width = '5px';
-                plant.style.height = '0';
-                plant.style.zIndex = '1';
-                scene.appendChild(plant);
-
-                const stem = document.createElement('div');
-                stem.className = 'flower-stem';
-                stem.style.left = '50%';
-                stem.style.bottom = '0';
-                stem.style.height = '100%';
-                plant.appendChild(stem);
-
-                for (let j = 0; j < 3; j++) {
+                sunflowerPositions.forEach((pos, i) => {
+                    const plant = document.createElement('div');
+                    plant.className = 'plant';
+                    plant.style.left = pos.left;
+                    plant.style.bottom = '20px';
+                    plant.style.width = '5px';
+                    plant.style.height = '0';
+                    plant.style.zIndex = '1';
+                    scene.appendChild(plant);
+                    const stem = document.createElement('div');
+                    stem.className = 'flower-stem';
+                    stem.style.left = '50%';
+                    stem.style.bottom = '0';
+                    stem.style.height = '100%';
+                    plant.appendChild(stem);
                     const flower = document.createElement('div');
-                    flower.className = 'jasmine';
-                    flower.style.left = (30 + j * 20) + '%';
+                    flower.className = 'sunflower';
+                    flower.style.left = '50%';
                     flower.style.top = '0';
                     flower.style.width = pos.size + 'px';
                     flower.style.height = pos.size + 'px';
@@ -1514,303 +1855,517 @@
                     flower.style.transform = 'translate(-50%, -50%)';
                     flower.style.opacity = '0';
                     plant.appendChild(flower);
-
-                    for (let p = 0; p < 6; p++) {
+                    for (let p = 0; p < 8; p++) {
                         const petal = document.createElement('div');
                         petal.className = 'petal';
-                        petal.style.width = (pos.size * 0.4) + 'px';
-                        petal.style.height = (pos.size * 0.4) + 'px';
-                        petal.style.transform =
-                            `translate(-50%, -50%) rotate(${p * 60}deg) translateY(-${pos.size * 0.4}px)`;
+                        petal.style.width = (pos.size * 0.3) + 'px';
+                        petal.style.height = (pos.size * 0.3) + 'px';
+                        petal.style.transform = 'translate(-50%, -50%) rotate(' + (p * 45) +
+                            'deg) translateY(-' + (pos.size * 0.55) + 'px)';
                         petal.style.position = 'absolute';
                         petal.style.top = '50%';
                         petal.style.left = '50%';
                         flower.appendChild(petal);
                     }
-                    const dot = document.createElement('div');
-                    dot.className = 'center-dot';
-                    dot.style.width = (pos.size * 0.3) + 'px';
-                    dot.style.height = (pos.size * 0.3) + 'px';
-                    dot.style.position = 'absolute';
-                    dot.style.top = '50%';
-                    dot.style.left = '50%';
-                    flower.appendChild(dot);
-                }
-
-                const leaf = document.createElement('div');
-                leaf.className = 'leaf';
-                leaf.style.left = '30%';
-                leaf.style.bottom = '40%';
-                leaf.style.position = 'absolute';
-                leaf.style.transformOrigin = 'left center';
-                leaf.style.transform = 'scaleX(0)';
-                plant.appendChild(leaf);
-            });
-
-            const plants = $$('.plant');
-            gsap.to(plants, {
-                height: (i) => i < sunflowerPositions.length ? sunflowerPositions[i].height : jasminePositions[i -
-                    sunflowerPositions.length].height,
-                duration: 1.2,
-                stagger: 0.08,
-                ease: 'back.out(1.2)'
-            });
-
-            gsap.to('.leaf', { transform: 'scaleX(1)', opacity: 1, duration: 0.5, stagger: 0.1, delay: 1.0 });
-
-            const sunflowers = $$('.sunflower');
-            sunflowers.forEach((flower, i) => {
-                gsap.to(flower, { opacity: 1, duration: 0.8, delay: 1.8 + i * 0.5, ease: 'back.out(1.7)' });
-                const petals = flower.querySelectorAll('.petal');
-                petals.forEach((petal, p) => {
-                    petal.style.opacity = 0;
-                    gsap.to(petal, { opacity: 1, duration: 0.4, delay: 1.8 + i * 0.5 + p * 0.07 });
+                    const disk = document.createElement('div');
+                    disk.className = 'center-disk';
+                    disk.style.width = (pos.size * 0.4) + 'px';
+                    disk.style.height = (pos.size * 0.4) + 'px';
+                    disk.style.position = 'absolute';
+                    disk.style.top = '50%';
+                    disk.style.left = '50%';
+                    flower.appendChild(disk);
+                    const leaf1 = document.createElement('div');
+                    leaf1.className = 'leaf';
+                    leaf1.style.left = '20%';
+                    leaf1.style.bottom = '30%';
+                    leaf1.style.position = 'absolute';
+                    leaf1.style.transformOrigin = 'left center';
+                    leaf1.style.transform = 'scaleX(0)';
+                    plant.appendChild(leaf1);
+                    const leaf2 = document.createElement('div');
+                    leaf2.className = 'leaf';
+                    leaf2.style.left = '80%';
+                    leaf2.style.bottom = '60%';
+                    leaf2.style.position = 'absolute';
+                    leaf2.style.transformOrigin = 'right center';
+                    leaf2.style.transform = 'scaleX(0)';
+                    plant.appendChild(leaf2);
                 });
-                const disk = flower.querySelector('.center-disk');
-                disk.style.opacity = 0;
-                gsap.to(disk, { opacity: 1, scale: 1, duration: 0.3, delay: 1.8 + i * 0.5 + 0.6 });
-            });
 
-            const jasmines = $$('.jasmine');
-            jasmines.forEach((flower, i) => {
-                gsap.to(flower, { opacity: 1, duration: 0.6, delay: 2.5 + i * 0.3, ease: 'back.out(1.7)' });
-                const petals = flower.querySelectorAll('.petal');
-                petals.forEach((petal, p) => {
-                    petal.style.opacity = 0;
-                    gsap.to(petal, { opacity: 1, duration: 0.3, delay: 2.5 + i * 0.3 + p * 0.05 });
+                jasminePositions.forEach((pos) => {
+                    const plant = document.createElement('div');
+                    plant.className = 'plant';
+                    plant.style.left = pos.left;
+                    plant.style.bottom = '20px';
+                    plant.style.width = '5px';
+                    plant.style.height = '0';
+                    plant.style.zIndex = '1';
+                    scene.appendChild(plant);
+                    const stem = document.createElement('div');
+                    stem.className = 'flower-stem';
+                    stem.style.left = '50%';
+                    stem.style.bottom = '0';
+                    stem.style.height = '100%';
+                    plant.appendChild(stem);
+                    for (let j = 0; j < 3; j++) {
+                        const flower = document.createElement('div');
+                        flower.className = 'jasmine';
+                        flower.style.left = (30 + j * 20) + '%';
+                        flower.style.top = '0';
+                        flower.style.width = pos.size + 'px';
+                        flower.style.height = pos.size + 'px';
+                        flower.style.position = 'absolute';
+                        flower.style.transform = 'translate(-50%, -50%)';
+                        flower.style.opacity = '0';
+                        plant.appendChild(flower);
+                        for (let p = 0; p < 6; p++) {
+                            const petal = document.createElement('div');
+                            petal.className = 'petal';
+                            petal.style.width = (pos.size * 0.4) + 'px';
+                            petal.style.height = (pos.size * 0.4) + 'px';
+                            petal.style.transform = 'translate(-50%, -50%) rotate(' + (p * 60) +
+                                'deg) translateY(-' + (pos.size * 0.4) + 'px)';
+                            petal.style.position = 'absolute';
+                            petal.style.top = '50%';
+                            petal.style.left = '50%';
+                            flower.appendChild(petal);
+                        }
+                        const dot = document.createElement('div');
+                        dot.className = 'center-dot';
+                        dot.style.width = (pos.size * 0.3) + 'px';
+                        dot.style.height = (pos.size * 0.3) + 'px';
+                        dot.style.position = 'absolute';
+                        dot.style.top = '50%';
+                        dot.style.left = '50%';
+                        flower.appendChild(dot);
+                    }
+                    const leaf = document.createElement('div');
+                    leaf.className = 'leaf';
+                    leaf.style.left = '30%';
+                    leaf.style.bottom = '40%';
+                    leaf.style.position = 'absolute';
+                    leaf.style.transformOrigin = 'left center';
+                    leaf.style.transform = 'scaleX(0)';
+                    plant.appendChild(leaf);
                 });
-                const dot = flower.querySelector('.center-dot');
-                dot.style.opacity = 0;
-                gsap.to(dot, { opacity: 1, duration: 0.2, delay: 2.5 + i * 0.3 + 0.4 });
-            });
 
-            const totalBloomDelay = 4.0;
-            setTimeout(() => {
-                gsap.to('.plant', {
-                    rotation: (i) => i % 2 === 0 ? 3 : -3,
-                    transformOrigin: 'bottom center',
-                    duration: 2.5,
-                    yoyo: true,
-                    repeat: -1,
-                    ease: 'sine.inOut',
-                    stagger: 0.15
-                });
-                const sparkleInterval = setInterval(() => {
-                    const sparkle = document.createElement('div');
-                    sparkle.className = 'sparkle';
-                    sparkle.style.left = (Math.random() * 80 + 10) + '%';
-                    sparkle.style.top = (Math.random() * 60 + 20) + '%';
-                    sparkle.style.position = 'absolute';
-                    sparkle.style.pointerEvents = 'none';
-                    scene.appendChild(sparkle);
-                    gsap.fromTo(sparkle, { opacity: 0, scale: 0.5 }, {
-                        opacity: 1,
-                        scale: 1.5,
-                        duration: 0.8,
-                        yoyo: true,
-                        repeat: 1,
-                        onComplete: () => sparkle.remove()
+                const plants = $$('.plant');
+                if (window.gsap && !reducedMotion) {
+                    gsap.to(plants, {
+                        height: (i) => i < sunflowerPositions.length ? sunflowerPositions[i].height :
+                            jasminePositions[i - sunflowerPositions.length].height,
+                        duration: 1.1,
+                        stagger: 0.07,
+                        ease: 'back.out(1.2)'
                     });
-                }, 3000);
-                let petalInterval = setInterval(() => {
-                    const petal = document.createElement('div');
-                    petal.className = 'falling-petal';
-                    petal.style.left = Math.random() * 80 + 10 + '%';
-                    petal.style.top = '-20px';
-                    petal.style.width = (Math.random() * 8 + 4) + 'px';
-                    petal.style.height = petal.style.width;
-                    petal.style.background = Math.random() > 0.5 ? '#ffd966' : '#fff';
-                    petal.style.borderRadius = '50% 50% 30% 30%';
-                    petal.style.opacity = 0.8;
-                    petal.style.position = 'absolute';
-                    petal.style.animation = `petalFall ${Math.random()*3+3}s ease-in forwards`;
-                    scene.appendChild(petal);
-                    setTimeout(() => petal.remove(), 5000);
-                }, 2000);
-                gsap.to('.flower-message', { opacity: 1, duration: 1 });
-                gsap.to(btnContinue, { display: 'inline-block', opacity: 1, duration: 0.5 });
-            }, totalBloomDelay * 1000);
-        }
-
-        btnContinue.addEventListener('click', () => {
-            unlockAndGoTo('questionSection');
-        });
-
-        function handleQuestion() {
-            responseText.style.opacity = 1;
-            spawnConfetti(80);
-            questionNextBtn.style.display = 'inline-block';
-            document.getElementById('btnYes').style.pointerEvents = 'none';
-            document.getElementById('btnOfCourse').style.pointerEvents = 'none';
-            document.getElementById('btnYes').style.opacity = '0.6';
-            document.getElementById('btnOfCourse').style.opacity = '0.6';
-        }
-        document.getElementById('btnYes').addEventListener('click', handleQuestion);
-        document.getElementById('btnOfCourse').addEventListener('click', handleQuestion);
-
-        questionNextBtn.addEventListener('click', () => {
-            unlockAndGoTo('cakeSection');
-        });
-
-        let candlesLit = false,
-            candlesBlown = false;
-
-        function lightCandles() {
-            if (candlesLit) return;
-            candlesLit = true;
-            gsap.to(clickMeLabel, { opacity: 0, y: -20, duration: 0.4 });
-            const flames = $$('.candle .flame');
-            flames.forEach((f, i) => {
-                gsap.to(f, { opacity: 1, duration: 0.3, delay: i * 0.5, onComplete: () => {
-                        f.style.animation =
-                        'candleFlicker 1.2s ease-in-out infinite, flameGlow 1.6s ease-in-out infinite';
-                    } });
-            });
-            setTimeout(() => {
-                cakeWish.style.opacity = 1;
-            }, flames.length * 500 + 500);
-        }
-
-        cakeWrap.addEventListener('click', () => {
-            if (!candlesLit) { lightCandles(); return; }
-            if (candlesBlown) return;
-            candlesBlown = true;
-            const flames = $$('.candle .flame');
-            flames.forEach((f, i) => {
-                gsap.to(f, { opacity: 0, duration: 0.3, delay: i * 0.2, onComplete: () => {
-                        f.style.animation = 'none';
-                    } });
-            });
-            cakeWish.style.opacity = 0;
-            const rect = cakeWrap.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2;
-            const cy = rect.top + rect.height / 3;
-            setTimeout(() => {
-                spawnFireworks(cx, cy, 100);
-                spawnConfetti(70);
-                gsap.to(cakeReveal, { opacity: 1, duration: 1 });
-                cakeNextBtn.style.display = 'inline-block';
-            }, 600);
-        });
-
-        cakeNextBtn.addEventListener('click', () => {
-            unlockAndGoTo('seventeenSecondsSection');
-        });
-
-        startSeventeenBtn.addEventListener('click', () => {
-            startSeventeenBtn.style.display = 'none';
-            seventeenTimer.style.display = 'block';
-            let seconds = 17;
-            seventeenCount.textContent = seconds;
-            const interval = setInterval(() => {
-                seconds--;
-                if (seconds > 0) {
-                    seventeenCount.textContent = seconds;
-                    if (seconds === 15) seventeenMessage.textContent = "glad we met";
-                    else if (seconds === 10) seventeenMessage.textContent = "you make me laugh way too much 😭";
-                    else if (seconds === 5) seventeenMessage.textContent = "still got a lot to do together";
-                    else if (seconds === 1) seventeenMessage.textContent =
-                        "okay why is this timer taking forever 💀";
+                    gsap.to('.leaf', { transform: 'scaleX(1)', opacity: 1, duration: 0.5, stagger: 0.08,
+                        delay: 0.9 });
+                    const sunflowers = $$('.sunflower');
+                    sunflowers.forEach((flower, i) => {
+                        gsap.to(flower, { opacity: 1, duration: 0.7, delay: 1.5 + i * 0.4,
+                            ease: 'back.out(1.7)' });
+                        const petals = flower.querySelectorAll('.petal');
+                        petals.forEach((petal, p) => {
+                            petal.style.opacity = 0;
+                            gsap.to(petal, { opacity: 1, duration: 0.3, delay: 1.5 + i * 0.4 + p *
+                                    0.06 });
+                        });
+                        const disk = flower.querySelector('.center-disk');
+                        disk.style.opacity = 0;
+                        gsap.to(disk, { opacity: 1, scale: 1, duration: 0.25, delay: 1.5 + i * 0.4 +
+                                0.5 });
+                    });
+                    const jasmines = $$('.jasmine');
+                    jasmines.forEach((flower, i) => {
+                        gsap.to(flower, { opacity: 1, duration: 0.5, delay: 2.2 + i * 0.25,
+                            ease: 'back.out(1.7)' });
+                        const petals = flower.querySelectorAll('.petal');
+                        petals.forEach((petal, p) => {
+                            petal.style.opacity = 0;
+                            gsap.to(petal, { opacity: 1, duration: 0.25, delay: 2.2 + i * 0.25 +
+                                p * 0.04 });
+                        });
+                        const dot = flower.querySelector('.center-dot');
+                        dot.style.opacity = 0;
+                        gsap.to(dot, { opacity: 1, duration: 0.18, delay: 2.2 + i * 0.25 + 0.35 });
+                    });
                 } else {
-                    clearInterval(interval);
-                    seventeenMessage.innerHTML =
-                        "okay… that was 17 seconds 😭<br>yeah, that wasn't nearly enough.<br>I still wanna spend a lot more time with you. 💜";
-                    gsap.to(seventeenCount, { opacity: 0, scale: 0.5, duration: 0.5 });
-                    seventeenNextBtn.style.display = 'inline-block';
+                    plants.forEach((plant, i) => {
+                        plant.style.height = (i < sunflowerPositions.length ? sunflowerPositions[i]
+                            .height : jasminePositions[i - sunflowerPositions.length].height) + 'px';
+                    });
+                    $$('.sunflower, .jasmine').forEach(f => { f.style.opacity = 1; });
+                    $$('.petal, .center-disk, .center-dot').forEach(el => { el.style.opacity = 1; });
+                    $$('.leaf').forEach(l => { l.style.transform = 'scaleX(1)';
+                        l.style.opacity = 1; });
                 }
-            }, 1000);
-        });
 
-        seventeenNextBtn.addEventListener('click', () => {
-            unlockAndGoTo('finalSection');
-            gsap.to(oneLastThing, { opacity: 1, duration: 1, delay: 0.5 });
-            gsap.to(openFinalBtn, { opacity: 1, pointerEvents: 'auto', duration: 1, delay: 1 });
-        });
+                const totalDelay = reducedMotion ? 300 : 3500;
+                setTimeout(() => {
+                    if (window.gsap && !reducedMotion) {
+                        gsap.to('.plant', {
+                            rotation: (i) => i % 2 === 0 ? 3 : -3,
+                            transformOrigin: 'bottom center',
+                            duration: 2.5,
+                            yoyo: true,
+                            repeat: -1,
+                            ease: 'sine.inOut',
+                            stagger: 0.12
+                        });
+                    }
+                    if (!reducedMotion) {
+                        const sparkleInterval = setInterval(() => {
+                            const sparkle = document.createElement('div');
+                            sparkle.className = 'sparkle';
+                            sparkle.style.left = (Math.random() * 80 + 10) + '%';
+                            sparkle.style.top = (Math.random() * 50 + 20) + '%';
+                            sparkle.style.position = 'absolute';
+                            sparkle.style.pointerEvents = 'none';
+                            scene.appendChild(sparkle);
+                            if (window.gsap) {
+                                gsap.fromTo(sparkle, { opacity: 0, scale: 0.5 }, {
+                                    opacity: 1,
+                                    scale: 1.5,
+                                    duration: 0.8,
+                                    yoyo: true,
+                                    repeat: 1,
+                                    onComplete: () => sparkle.remove()
+                                });
+                            } else {
+                                setTimeout(() => sparkle.remove(), 1600);
+                            }
+                        }, 3200);
+                    }
+                    const msg = document.querySelector('.flower-message');
+                    if (msg) msg.style.opacity = 1;
+                    btnContinue.style.display = 'inline-block';
+                    btnContinue.style.opacity = 1;
+                }, totalDelay);
+            }
 
-        openFinalBtn.addEventListener('click', () => {
-            gsap.to(oneLastThing, { opacity: 0, y: -20, duration: 0.5 });
-            gsap.to(openFinalBtn, {
-                opacity: 0,
-                scale: 0.8,
-                duration: 0.5,
-                onComplete: () => {
+            btnContinue.addEventListener('click', function() {
+                unlockAndGoTo('questionSection');
+            });
+            btnContinue.addEventListener('touchend', function(e) { e.preventDefault();
+                btnContinue.click(); });
+
+            function handleQuestion() {
+                responseText.style.opacity = 1;
+                spawnConfetti(70);
+                questionNextBtn.style.display = 'inline-block';
+                const yesBtn = document.getElementById('btnYes');
+                const ofCourseBtn = document.getElementById('btnOfCourse');
+                yesBtn.style.pointerEvents = 'none';
+                ofCourseBtn.style.pointerEvents = 'none';
+                yesBtn.style.opacity = '0.6';
+                ofCourseBtn.style.opacity = '0.6';
+            }
+            document.getElementById('btnYes').addEventListener('click', handleQuestion);
+            document.getElementById('btnOfCourse').addEventListener('click', handleQuestion);
+            document.getElementById('btnYes').addEventListener('touchend', function(e) { e.preventDefault();
+                handleQuestion(); });
+            document.getElementById('btnOfCourse').addEventListener('touchend', function(e) { e.preventDefault();
+                handleQuestion(); });
+
+            questionNextBtn.addEventListener('click', function() {
+                unlockAndGoTo('cakeSection');
+            });
+            questionNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
+                questionNextBtn.click(); });
+
+            let candlesLit = false,
+                candlesBlown = false;
+
+            function lightCandles() {
+                if (candlesLit) return;
+                candlesLit = true;
+                if (window.gsap && !reducedMotion) {
+                    gsap.to(clickMeLabel, { opacity: 0, y: -20, duration: 0.4 });
+                } else {
+                    clickMeLabel.style.opacity = 0;
+                }
+                const flames = $$('.candle .flame');
+                flames.forEach((f, i) => {
+                    setTimeout(() => {
+                        f.style.opacity = 1;
+                        if (!reducedMotion) {
+                            f.style.animation = 'candleFlicker 1.2s ease-in-out infinite, flameGlow 1.6s ease-in-out infinite';
+                        }
+                    }, i * 450);
+                });
+                setTimeout(() => {
+                    cakeWish.style.opacity = 1;
+                }, flames.length * 450 + 400);
+            }
+
+            function blowCandles() {
+                if (candlesBlown) return;
+                candlesBlown = true;
+                const flames = $$('.candle .flame');
+                flames.forEach((f, i) => {
+                    if (window.gsap && !reducedMotion) {
+                        gsap.to(f, { opacity: 0, duration: 0.3, delay: i * 0.18, onComplete: () => {
+                                f.style.animation = 'none';
+                            } });
+                    } else {
+                        f.style.opacity = 0;
+                        f.style.animation = 'none';
+                    }
+                });
+                cakeWish.style.opacity = 0;
+                setTimeout(() => {
+                    const rect = cakeWrap.getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height / 3;
+                    spawnFireworks(cx, cy, isMobile ? 50 : 90);
+                    spawnConfetti(60);
+                    cakeReveal.style.opacity = 1;
+                    cakeNextBtn.style.display = 'inline-block';
+                }, 500);
+            }
+
+            cakeWrap.addEventListener('click', function() {
+                if (!candlesLit) { lightCandles(); return; }
+                blowCandles();
+            });
+            cakeWrap.addEventListener('touchend', function(e) { e.preventDefault();
+                if (!candlesLit) { lightCandles(); return; }
+                blowCandles(); });
+
+            cakeNextBtn.addEventListener('click', function() {
+                unlockAndGoTo('seventeenSecondsSection');
+            });
+            cakeNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
+                cakeNextBtn.click(); });
+
+            startSeventeenBtn.addEventListener('click', function() {
+                startSeventeenBtn.style.display = 'none';
+                seventeenTimer.style.display = 'block';
+                let seconds = 17;
+                seventeenCount.textContent = seconds;
+                const interval = setInterval(() => {
+                    seconds--;
+                    if (seconds > 0) {
+                        seventeenCount.textContent = seconds;
+                        if (seconds === 15) seventeenMessage.textContent = "glad we met";
+                        else if (seconds === 10) seventeenMessage.textContent =
+                            "you make me laugh way too much 😭";
+                        else if (seconds === 5) seventeenMessage.textContent =
+                            "still got a lot to do together";
+                        else if (seconds === 1) seventeenMessage.textContent =
+                            "okay why is this timer taking forever 💀";
+                    } else {
+                        clearInterval(interval);
+                        seventeenMessage.innerHTML =
+                            "okay… that was 17 seconds 😭<br>yeah, that wasn't nearly enough.<br>I still wanna spend a lot more time with you. 💜";
+                        if (window.gsap && !reducedMotion) {
+                            gsap.to(seventeenCount, { opacity: 0, scale: 0.5, duration: 0.5 });
+                        } else {
+                            seventeenCount.style.opacity = 0;
+                        }
+                        seventeenNextBtn.style.display = 'inline-block';
+                    }
+                }, 1000);
+            });
+            startSeventeenBtn.addEventListener('touchend', function(e) { e.preventDefault();
+                startSeventeenBtn.click(); });
+
+            seventeenNextBtn.addEventListener('click', function() {
+                unlockAndGoTo('finalSection');
+                setTimeout(() => {
+                    oneLastThing.style.opacity = 1;
+                    openFinalBtn.style.opacity = 1;
+                    openFinalBtn.style.pointerEvents = 'auto';
+                }, 400);
+            });
+            seventeenNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
+                seventeenNextBtn.click(); });
+
+            openFinalBtn.addEventListener('click', function() {
+                if (window.gsap && !reducedMotion) {
+                    gsap.to(oneLastThing, { opacity: 0, y: -20, duration: 0.5 });
+                    gsap.to(openFinalBtn, {
+                        opacity: 0,
+                        scale: 0.8,
+                        duration: 0.5,
+                        onComplete: () => {
+                            openFinalBtn.style.display = 'none';
+                            finalMessageContainer.style.opacity = 1;
+                            const lines = finalMessageContainer.querySelectorAll('.final-line');
+                            lines.forEach((line, i) => {
+                                gsap.to(line, { opacity: 1, y: 0, filter: 'blur(0)',
+                                    duration: 0.7, delay: i * 0.55 });
+                            });
+                            setTimeout(() => {
+                                spawnConfetti(25);
+                                spawnFireworks(window.innerWidth / 2, window.innerHeight / 2,
+                                    35);
+                            }, 1400);
+                        }
+                    });
+                } else {
+                    oneLastThing.style.opacity = 0;
                     openFinalBtn.style.display = 'none';
                     finalMessageContainer.style.opacity = 1;
-                    const lines = finalMessageContainer.querySelectorAll('.final-line');
-                    lines.forEach((line, i) => {
-                        gsap.to(line, { opacity: 1, y: 0, filter: 'blur(0)', duration: 0.8, delay: i *
-                                0.6 });
+                    finalMessageContainer.querySelectorAll('.final-line').forEach(l => {
+                        l.style.opacity = 1;
+                        l.style.transform = 'none';
+                        l.style.filter = 'none';
                     });
-                    setTimeout(() => {
-                        spawnConfetti(30);
-                        spawnFireworks(window.innerWidth / 2, window.innerHeight / 2, 40);
-                    }, 1500);
+                    spawnConfetti(20);
                 }
             });
-        });
+            openFinalBtn.addEventListener('touchend', function(e) { e.preventDefault();
+                openFinalBtn.click(); });
 
-        if (CONFIG.music) bgAudio.querySelector('source').src = CONFIG.music;
-        let musicPlaying = false;
-        musicFAB.addEventListener('click', () => {
-            if (!musicPlaying) {
-                bgAudio.play().catch(() => {});
-                musicPlaying = true;
-                musicFAB.style.animation = 'musicGlow 1.6s infinite';
-                musicFAB.innerHTML = '🎵';
-            } else {
-                bgAudio.pause();
-                musicPlaying = false;
-                musicFAB.style.animation = '';
-                musicFAB.innerHTML = '🎵';
+            // ─── Music with Web Audio API fallback ───
+            let musicPlaying = false;
+            let audioCtx = null;
+            let audioSource = null;
+
+            function generateHappyBirthdayMelody() {
+                if (!audioCtx) {
+                    audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const notes = [
+                    { freq: 392.00, dur: 0.4 }, { freq: 392.00, dur: 0.4 }, { freq: 440.00, dur: 0.4 },
+                    { freq: 392.00, dur: 0.4 }, { freq: 523.25, dur: 0.4 }, { freq: 493.88, dur: 0.8 },
+                    { freq: 392.00, dur: 0.4 }, { freq: 392.00, dur: 0.4 }, { freq: 440.00, dur: 0.4 },
+                    { freq: 392.00, dur: 0.4 }, { freq: 587.33, dur: 0.4 }, { freq: 523.25, dur: 0.8 },
+                    { freq: 392.00, dur: 0.4 }, { freq: 392.00, dur: 0.4 }, { freq: 783.99, dur: 0.4 },
+                    { freq: 659.25, dur: 0.4 }, { freq: 523.25, dur: 0.4 }, { freq: 493.88, dur: 0.4 },
+                    { freq: 440.00, dur: 0.8 },
+                    { freq: 698.46, dur: 0.4 }, { freq: 698.46, dur: 0.4 }, { freq: 659.25, dur: 0.4 },
+                    { freq: 523.25, dur: 0.4 }, { freq: 587.33, dur: 0.4 }, { freq: 523.25, dur: 0.8 },
+                ];
+                const ctx = audioCtx;
+                notes.forEach((note, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = note.freq;
+                    gain.gain.setValueAtTime(0.25, ctx.currentTime + i * 0.45);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.45 + note.dur);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + i * 0.45);
+                    osc.stop(ctx.currentTime + i * 0.45 + note.dur + 0.05);
+                });
             }
-        });
 
-        let secretTaps = 0;
-        secretStar.addEventListener('click', (e) => {
-            e.stopPropagation();
-            secretTaps++;
-            if (secretTaps >= 5) {
-                secretModal.style.opacity = 1;
-                secretModal.style.visibility = 'visible';
-                secretTaps = 0;
-                spawnConfetti(30);
-            }
-        });
-        secretModal.addEventListener('click', () => {
-            secretModal.style.opacity = 0;
-            secretModal.style.visibility = 'hidden';
-        });
-
-        const progressDots = $$('.progress-dot');
-        const sectionIds = Array.from(progressDots).map(d => d.dataset.section);
-
-        function updateProgress() {
-            let currentIndex = 0;
-            sectionIds.forEach((id, i) => {
-                const section = document.getElementById(id);
-                if (!section) return;
-                const rect = section.getBoundingClientRect();
-                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-                    currentIndex = i;
+            musicFAB.addEventListener('click', function() {
+                if (!musicPlaying) {
+                    const audioEl = bgAudio;
+                    const src = audioEl.querySelector('source');
+                    if (src && src.src && !src.src.includes('undefined')) {
+                        audioEl.play().then(() => {
+                            musicPlaying = true;
+                            musicFAB.style.animation = 'musicGlow 1.6s infinite';
+                            musicFAB.innerHTML = '🎵';
+                        }).catch(() => {
+                            generateHappyBirthdayMelody();
+                            musicPlaying = true;
+                            musicFAB.style.animation = 'musicGlow 1.6s infinite';
+                            musicFAB.innerHTML = '🎵';
+                        });
+                    } else {
+                        generateHappyBirthdayMelody();
+                        musicPlaying = true;
+                        musicFAB.style.animation = 'musicGlow 1.6s infinite';
+                        musicFAB.innerHTML = '🎵';
+                    }
+                } else {
+                    if (audioSource) {
+                        try { audioSource.stop(); } catch (e) {}
+                        audioSource = null;
+                    }
+                    bgAudio.pause();
+                    if (audioCtx) { audioCtx.close();
+                        audioCtx = null; }
+                    musicPlaying = false;
+                    musicFAB.style.animation = '';
+                    musicFAB.innerHTML = '🎵';
                 }
             });
-            progressDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIndex);
-                dot.classList.toggle('completed', i < currentIndex);
-            });
-        }
-        window.addEventListener('scroll', updateProgress);
-        updateProgress();
+            musicFAB.addEventListener('touchend', function(e) { e.preventDefault();
+                musicFAB.click(); });
 
-        sectionIds.forEach(id => {
-            if (id !== 'envelopeSection') {
-                const section = document.getElementById(id);
-                if (section) {
-                    section.classList.add('locked');
-                    section.classList.remove('unlocked');
+            let secretTaps = 0;
+            secretStar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                secretTaps++;
+                if (secretTaps >= 5) {
+                    secretModal.style.opacity = 1;
+                    secretModal.style.visibility = 'visible';
+                    secretTaps = 0;
+                    spawnConfetti(25);
                 }
+            });
+            secretStar.addEventListener('touchend', function(e) { e.preventDefault();
+                secretStar.click(); });
+            secretModal.addEventListener('click', function() {
+                secretModal.style.opacity = 0;
+                secretModal.style.visibility = 'hidden';
+            });
+            secretModal.addEventListener('touchend', function(e) { e.preventDefault();
+                secretModal.click(); });
+
+            const progressDots = $$('.progress-dot');
+            const sectionIds = Array.from(progressDots).map(d => d.dataset.section);
+
+            function updateProgress() {
+                let currentIndex = 0;
+                sectionIds.forEach((id, i) => {
+                    const section = document.getElementById(id);
+                    if (!section) return;
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                        currentIndex = i;
+                    }
+                });
+                progressDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                    dot.classList.toggle('completed', i < currentIndex);
+                });
             }
-        });
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            updateProgress();
+
+            sectionIds.forEach(id => {
+                if (id !== 'envelopeSection') {
+                    const section = document.getElementById(id);
+                    if (section) {
+                        section.classList.add('locked');
+                        section.classList.remove('unlocked');
+                    }
+                }
+            });
+
+            // Prevent double-tap zoom on buttons
+            document.addEventListener('touchend', function(e) {
+                const target = e.target.closest('.btn, .wish-card, .thing-card, .env-wrapper, #musicFAB, #secretStar');
+                if (target) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // Handle keyboard navigation for progress dots
+            progressDots.forEach(dot => {
+                dot.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        scrollToSection(dot.dataset.section);
+                    }
+                });
+            });
+
+            console.log('💜 Happy 17th Birthday Elena! — All systems ready.');
+            console.log('📱 Mobile:', isMobile, '| Reduced Motion:', reducedMotion);
+        })();
     </script>
 </body>
 </html>
