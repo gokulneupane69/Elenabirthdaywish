@@ -1014,32 +1014,7 @@
                 font-size: 0.85em;
             }
         }
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-            .cake-container {
-                animation: none;
-            }
-            .happy-text-char {
-                opacity: 1 !important;
-                transform: none !important;
-            }
-        }
-        @media (max-height: 500px) {
-            .section {
-                min-height: auto;
-                padding: 3rem 1rem;
-            }
-            .letter-paper {
-                max-height: 60dvh;
-            }
-        }
+        /* REMOVED prefers-reduced-motion block to ensure animations always run */
     </style>
 </head>
 <body>
@@ -1266,7 +1241,7 @@
             const $ = (s) => document.querySelector(s);
             const $$ = (s) => document.querySelectorAll(s);
             const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window && window.innerWidth <= 1024);
-            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            // Animations always on – removed reducedMotion check
 
             const bgCanvas = $('#bgCanvas');
             const bgCtx = bgCanvas.getContext('2d');
@@ -1359,12 +1334,7 @@
                 }
                 requestAnimationFrame(drawBg);
             }
-            if (!reducedMotion) {
-                drawBg();
-            } else {
-                bgCtx.fillStyle = '#080114';
-                bgCtx.fillRect(0, 0, w, h);
-            }
+            drawBg(); // Always start animation loop
 
             function spawnFireworks(cx, cy, count) {
                 count = isMobile ? Math.floor(count * 0.5) : count;
@@ -1437,7 +1407,7 @@
             function scrollToSection(sectionId) {
                 const section = document.getElementById(sectionId);
                 if (section) {
-                    section.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
 
@@ -1496,7 +1466,7 @@
 
             function showCdNum(num, cb) {
                 cdNumber.textContent = num;
-                if (window.gsap && !reducedMotion) {
+                if (window.gsap) {
                     gsap.fromTo(cdNumber, { scale: 3, opacity: 0, filter: 'blur(10px)' }, {
                         scale: 1,
                         opacity: 1,
@@ -1538,7 +1508,7 @@
 
                 const chars = bigText.querySelectorAll('.happy-text-char');
 
-                if (window.gsap && !reducedMotion) {
+                if (window.gsap) {
                     gsap.to(chars, {
                         opacity: 1,
                         y: 0,
@@ -1617,7 +1587,7 @@
                 noAnimating = true;
                 noMessage.textContent = 'BRO 😭';
                 noMessage.style.opacity = 1;
-                if (window.gsap && !reducedMotion) {
+                if (window.gsap) {
                     gsap.fromTo(noMessage, { opacity: 0, scale: 0.5, rotation: -8, y: 0 }, {
                         opacity: 1,
                         scale: 1,
@@ -1685,7 +1655,7 @@
                 if (envelopeOpened) return;
                 envelopeOpened = true;
                 envHint.innerHTML = 'wait… 😭';
-                if (window.gsap && !reducedMotion) {
+                if (window.gsap) {
                     gsap.to(envEl, { rotateX: -6, y: -12, duration: 0.7, ease: 'power2.out' });
                     gsap.to(envFlap, { rotateX: 178, duration: 0.75, ease: 'power2.out',
                         boxShadow: '0 12px 35px rgba(0,0,0,0.55)' });
@@ -1744,7 +1714,7 @@
                         }
                     });
                     wishesContainer.appendChild(card);
-                    if (window.gsap && !reducedMotion) {
+                    if (window.gsap) {
                         gsap.fromTo(card, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.4,
                             delay: 0.08 + idx * 0.07, ease: 'power2.out' });
                     }
@@ -1777,7 +1747,7 @@
                         if (!card.classList.contains('flipped')) {
                             card.classList.add('flipped');
                             const inner = card.querySelector('.thing-inner');
-                            if (window.gsap && !reducedMotion) {
+                            if (window.gsap) {
                                 gsap.to(inner, { rotateY: 180, duration: 0.5, ease: 'back.out(1.4)' });
                             } else {
                                 inner.style.transform = 'rotateY(180deg)';
@@ -1951,7 +1921,7 @@
                 });
 
                 const plants = $$('.plant');
-                if (window.gsap && !reducedMotion) {
+                if (window.gsap) {
                     gsap.to(plants, {
                         height: (i) => i < sunflowerPositions.length ? sunflowerPositions[i].height :
                             jasminePositions[i - sunflowerPositions.length].height,
@@ -2001,9 +1971,9 @@
                         l.style.opacity = 1; });
                 }
 
-                const totalDelay = reducedMotion ? 300 : 3500;
+                const totalDelay = 3500;
                 setTimeout(() => {
-                    if (window.gsap && !reducedMotion) {
+                    if (window.gsap) {
                         gsap.to('.plant', {
                             rotation: (i) => i % 2 === 0 ? 3 : -3,
                             transformOrigin: 'bottom center',
@@ -2014,29 +1984,27 @@
                             stagger: 0.12
                         });
                     }
-                    if (!reducedMotion) {
-                        const sparkleInterval = setInterval(() => {
-                            const sparkle = document.createElement('div');
-                            sparkle.className = 'sparkle';
-                            sparkle.style.left = (Math.random() * 80 + 10) + '%';
-                            sparkle.style.top = (Math.random() * 50 + 20) + '%';
-                            sparkle.style.position = 'absolute';
-                            sparkle.style.pointerEvents = 'none';
-                            scene.appendChild(sparkle);
-                            if (window.gsap) {
-                                gsap.fromTo(sparkle, { opacity: 0, scale: 0.5 }, {
-                                    opacity: 1,
-                                    scale: 1.5,
-                                    duration: 0.8,
-                                    yoyo: true,
-                                    repeat: 1,
-                                    onComplete: () => sparkle.remove()
-                                });
-                            } else {
-                                setTimeout(() => sparkle.remove(), 1600);
-                            }
-                        }, 3200);
-                    }
+                    const sparkleInterval = setInterval(() => {
+                        const sparkle = document.createElement('div');
+                        sparkle.className = 'sparkle';
+                        sparkle.style.left = (Math.random() * 80 + 10) + '%';
+                        sparkle.style.top = (Math.random() * 50 + 20) + '%';
+                        sparkle.style.position = 'absolute';
+                        sparkle.style.pointerEvents = 'none';
+                        scene.appendChild(sparkle);
+                        if (window.gsap) {
+                            gsap.fromTo(sparkle, { opacity: 0, scale: 0.5 }, {
+                                opacity: 1,
+                                scale: 1.5,
+                                duration: 0.8,
+                                yoyo: true,
+                                repeat: 1,
+                                onComplete: () => sparkle.remove()
+                            });
+                        } else {
+                            setTimeout(() => sparkle.remove(), 1600);
+                        }
+                    }, 3200);
                     const msg = document.querySelector('.flower-message');
                     if (msg) msg.style.opacity = 1;
                     btnContinue.style.display = 'inline-block';
@@ -2080,7 +2048,7 @@
             function lightCandles() {
                 if (candlesLit) return;
                 candlesLit = true;
-                if (window.gsap && !reducedMotion) {
+                if (window.gsap) {
                     gsap.to(clickMeLabel, { opacity: 0, y: -20, duration: 0.4 });
                 } else {
                     clickMeLabel.style.opacity = 0;
@@ -2089,9 +2057,7 @@
                 flames.forEach((f, i) => {
                     setTimeout(() => {
                         f.style.opacity = 1;
-                        if (!reducedMotion) {
-                            f.style.animation = 'candleFlicker 1.2s ease-in-out infinite, flameGlow 1.6s ease-in-out infinite';
-                        }
+                        f.style.animation = 'candleFlicker 1.2s ease-in-out infinite, flameGlow 1.6s ease-in-out infinite';
                     }, i * 450);
                 });
                 setTimeout(() => {
@@ -2104,7 +2070,7 @@
                 candlesBlown = true;
                 const flames = $$('.candle .flame');
                 flames.forEach((f, i) => {
-                    if (window.gsap && !reducedMotion) {
+                    if (window.gsap) {
                         gsap.to(f, { opacity: 0, duration: 0.3, delay: i * 0.18, onComplete: () => {
                                 f.style.animation = 'none';
                             } });
@@ -2159,7 +2125,7 @@
                         clearInterval(interval);
                         seventeenMessage.innerHTML =
                             "okay… that was 17 seconds 😭<br>yeah, that wasn't nearly enough.<br>I still wanna spend a lot more time with you. 💜";
-                        if (window.gsap && !reducedMotion) {
+                        if (window.gsap) {
                             gsap.to(seventeenCount, { opacity: 0, scale: 0.5, duration: 0.5 });
                         } else {
                             seventeenCount.style.opacity = 0;
@@ -2183,7 +2149,7 @@
                 seventeenNextBtn.click(); });
 
             openFinalBtn.addEventListener('click', function() {
-                if (window.gsap && !reducedMotion) {
+                if (window.gsap) {
                     gsap.to(oneLastThing, { opacity: 0, y: -20, duration: 0.5 });
                     gsap.to(openFinalBtn, {
                         opacity: 0,
@@ -2219,7 +2185,7 @@
             openFinalBtn.addEventListener('touchend', function(e) { e.preventDefault();
                 openFinalBtn.click(); });
 
-            // ─── Music with Web Audio API fallback ───
+            // Music handling (same as before, without reduced motion checks)
             let musicPlaying = false;
             let audioCtx = null;
             let audioSource = null;
@@ -2353,7 +2319,7 @@
                 }
             }, { passive: false });
 
-            // Handle keyboard navigation for progress dots
+            // Keyboard navigation for progress dots
             progressDots.forEach(dot => {
                 dot.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -2363,8 +2329,8 @@
                 });
             });
 
-            console.log('💜 Happy 17th Birthday Elena! — All systems ready.');
-            console.log('📱 Mobile:', isMobile, '| Reduced Motion:', reducedMotion);
+            console.log('💜 Happy 17th Birthday Elena! — All animations enabled.');
+            console.log('📱 Mobile:', isMobile);
         })();
     </script>
 </body>
