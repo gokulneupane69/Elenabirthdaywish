@@ -53,7 +53,7 @@
             text-rendering: optimizeLegibility;
             min-height: 100vh;
             min-height: 100dvh;
-            overscroll-behavior-y: none;
+            overscroll-behavior-y: auto;   /* changed from none to auto */
             touch-action: manipulation;
         }
         canvas {
@@ -343,6 +343,7 @@
             overscroll-behavior: contain;
             scrollbar-width: thin;
             scrollbar-color: rgba(180, 140, 220, 0.4) transparent;
+            touch-action: pan-y;  /* added for mobile scrolling */
         }
         .letter-paper::-webkit-scrollbar {
             width: 4px;
@@ -1041,7 +1042,7 @@
 
         <section id="wishesSection" class="section locked" data-section="wishesSection">
             <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,2rem);color:#f0e8f8;margin-bottom:1.5rem;">Things I Wanna Do With You 💜</h2>
-            <div id="wishesContainer" style="width:100%;max-width:600px;margin:0 auto;max-height:55dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;"></div>
+            <div id="wishesContainer" style="width:100%;max-width:600px;margin:0 auto;max-height:55dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;"></div>
             <p id="wishesFooter" style="font-family:'Dancing Script',cursive;font-size:1.2rem;color:#d4bff0;margin-top:1rem;opacity:0;">All of these are still only a few things I wanna do with you. 💜</p>
             <button class="btn" id="wishesNextBtn" style="margin-top:0.5rem;display:none;">keep going 👀</button>
         </section>
@@ -2046,7 +2047,7 @@
                 }
             });
 
-            // Music handling (no touch event prevention)
+            // Music handling
             let musicPlaying = false;
             let audioCtx = null;
             let audioSource = null;
