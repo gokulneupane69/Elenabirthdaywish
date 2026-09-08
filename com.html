@@ -4,10 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover, maximum-scale=1.0" />
     <title>Happy 17th, Elena 💜</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js">
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Dancing+Script:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
     <style>
         :root {
@@ -50,7 +48,6 @@
             background: var(--dark-bg);
             color: var(--text-primary);
             overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
@@ -143,118 +140,49 @@
             z-index: 100;
         }
         @keyframes floatUp {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-300px) scale(0);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-300px) scale(0); opacity: 0; }
         }
         @keyframes petalFall {
-            0% {
-                transform: translateY(-40px) rotate(0deg) translateX(0);
-                opacity: 0;
-            }
-            18% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(380px) rotate(360deg) translateX(var(--drift, 0px));
-                opacity: 0;
-            }
+            0% { transform: translateY(-40px) rotate(0deg) translateX(0); opacity: 0; }
+            18% { opacity: 1; }
+            100% { transform: translateY(380px) rotate(360deg) translateX(var(--drift, 0px)); opacity: 0; }
         }
         @keyframes musicGlow {
-            0%,
-            100% {
-                box-shadow: 0 10px 32px rgba(80, 28, 160, 0.5), 0 0 22px rgba(130, 55, 200, 0.3);
-            }
-            50% {
-                box-shadow: 0 15px 48px rgba(130, 45, 200, 0.75), 0 0 45px rgba(170, 90, 240, 0.55);
-            }
+            0%, 100% { box-shadow: 0 10px 32px rgba(80, 28, 160, 0.5), 0 0 22px rgba(130, 55, 200, 0.3); }
+            50% { box-shadow: 0 15px 48px rgba(130, 45, 200, 0.75), 0 0 45px rgba(170, 90, 240, 0.55); }
         }
         @keyframes clickMePulse {
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 0.9;
-                text-shadow: 0 0 15px var(--glow-purple);
-            }
-            50% {
-                transform: scale(1.18);
-                opacity: 1;
-                text-shadow: 0 0 35px var(--glow-purple), 0 0 60px rgba(160, 80, 240, 0.6);
-            }
+            0%, 100% { transform: scale(1); opacity: 0.9; text-shadow: 0 0 15px var(--glow-purple); }
+            50% { transform: scale(1.18); opacity: 1; text-shadow: 0 0 35px var(--glow-purple), 0 0 60px rgba(160, 80, 240, 0.6); }
         }
         @keyframes progressDotPulse {
-            0%,
-            100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.3);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
         }
         @keyframes cakeFloat {
-            0%,
-            100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            25% {
-                transform: translateY(-8px) rotate(-1deg);
-            }
-            75% {
-                transform: translateY(-4px) rotate(1deg);
-            }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-8px) rotate(-1deg); }
+            75% { transform: translateY(-4px) rotate(1deg); }
         }
         @keyframes candleFlicker {
-            0%,
-            100% {
-                transform: translateX(-50%) scaleY(1) rotate(-2deg);
-            }
-            25% {
-                transform: translateX(-52%) scaleY(1.12) rotate(2deg);
-            }
-            50% {
-                transform: translateX(-48%) scaleY(0.92) rotate(-3deg);
-            }
-            75% {
-                transform: translateX(-51%) scaleY(1.05) rotate(1deg);
-            }
+            0%, 100% { transform: translateX(-50%) scaleY(1) rotate(-2deg); }
+            25% { transform: translateX(-52%) scaleY(1.12) rotate(2deg); }
+            50% { transform: translateX(-48%) scaleY(0.92) rotate(-3deg); }
+            75% { transform: translateX(-51%) scaleY(1.05) rotate(1deg); }
         }
         @keyframes confettiFall {
-            0% {
-                transform: translateY(0) translateX(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(110vh) translateX(var(--drift, 0px)) rotate(var(--rot, 360deg));
-                opacity: 0;
-            }
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) translateX(var(--drift, 0px)) rotate(var(--rot, 360deg)); opacity: 0; }
         }
         @keyframes thingCardPop {
-            0% {
-                transform: scale(0) rotate(-10deg);
-                opacity: 0;
-            }
-            60% {
-                transform: scale(1.12) rotate(2deg);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            60% { transform: scale(1.12) rotate(2deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
         @keyframes flameGlow {
-            0%,
-            100% {
-                box-shadow: 0 0 14px rgba(255, 180, 50, 0.7), 0 0 28px rgba(255, 150, 30, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 22px rgba(255, 200, 60, 0.9), 0 0 40px rgba(255, 170, 40, 0.7);
-            }
+            0%, 100% { box-shadow: 0 0 14px rgba(255, 180, 50, 0.7), 0 0 28px rgba(255, 150, 30, 0.4); }
+            50% { box-shadow: 0 0 22px rgba(255, 200, 60, 0.9), 0 0 40px rgba(255, 170, 40, 0.7); }
         }
         .petal {
             position: absolute;
@@ -407,6 +335,7 @@
             -webkit-backdrop-filter: blur(22px);
             text-align: left;
             line-height: 1.75;
+            max-height: 72vh;
             max-height: 72dvh;
             overflow-y: auto;
             position: relative;
@@ -550,13 +479,8 @@
             animation: sprinkleShimmer 2s ease-in-out infinite;
         }
         @keyframes sprinkleShimmer {
-            0%,
-            100% {
-                opacity: 0.7;
-            }
-            50% {
-                opacity: 1;
-            }
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
         }
         .cake-plate {
             width: 240px;
@@ -854,6 +778,7 @@
             }
             .letter-paper {
                 padding: 1.5rem 1rem;
+                max-height: 70vh;
                 max-height: 70dvh;
                 border-radius: 12px;
             }
@@ -925,6 +850,7 @@
         @media (max-width: 480px) {
             .letter-paper {
                 padding: 1.2rem 0.8rem;
+                max-height: 68vh;
                 max-height: 68dvh;
             }
             .letter-paper p {
@@ -1014,7 +940,6 @@
                 font-size: 0.85em;
             }
         }
-        /* REMOVED prefers-reduced-motion block to ensure animations always run */
     </style>
 </head>
 <body>
@@ -1022,15 +947,15 @@
     <canvas id="fwCanvas"></canvas>
 
     <div class="progress-track" id="progressTrack" aria-label="Page navigation">
-        <button class="progress-dot" data-section="envelopeSection" aria-label="Go to envelope section" tabindex="-1"></button>
-        <button class="progress-dot" data-section="letterSection" aria-label="Go to letter section" tabindex="-1"></button>
-        <button class="progress-dot" data-section="wishesSection" aria-label="Go to wishes section" tabindex="-1"></button>
-        <button class="progress-dot" data-section="thingsSection" aria-label="Go to things section" tabindex="-1"></button>
-        <button class="progress-dot" data-section="flowerSection" aria-label="Go to flowers section" tabindex="-1"></button>
-        <button class="progress-dot" data-section="questionSection" aria-label="Go to question section" tabindex="-1"></button>
-        <button class="progress-dot" data-section="cakeSection" aria-label="Go to cake section" tabindex="-1"></button>
-        <button class="progress-dot" data-section="seventeenSecondsSection" aria-label="Go to 17 seconds section" tabindex="-1"></button>
-        <button class="progress-dot" data-section="finalSection" aria-label="Go to final section" tabindex="-1"></button>
+        <button class="progress-dot" data-section="envelopeSection" aria-label="Envelope"></button>
+        <button class="progress-dot" data-section="letterSection" aria-label="Letter"></button>
+        <button class="progress-dot" data-section="wishesSection" aria-label="Wishes"></button>
+        <button class="progress-dot" data-section="thingsSection" aria-label="Things"></button>
+        <button class="progress-dot" data-section="flowerSection" aria-label="Flowers"></button>
+        <button class="progress-dot" data-section="questionSection" aria-label="Question"></button>
+        <button class="progress-dot" data-section="cakeSection" aria-label="Cake"></button>
+        <button class="progress-dot" data-section="seventeenSecondsSection" aria-label="17 Seconds"></button>
+        <button class="progress-dot" data-section="finalSection" aria-label="Final"></button>
     </div>
 
     <div id="countdownOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center,#140530 0%,#080114 55%,#030010 100%);z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;">
@@ -1061,6 +986,7 @@
 
         <section id="letterSection" class="section locked" data-section="letterSection">
             <div class="letter-paper" id="letterPaper">
+                <!-- all <p> tags -->
                 <p>Happy 17th Birthday, Elena. 💜🌻</p>
                 <p>I honestly don't even know where to start.</p>
                 <p>I could just say "Happy Birthday" and wish you a great year, but somehow that feels way too small for everything you've become to me.</p>
@@ -1202,9 +1128,7 @@
         </section>
     </div>
 
-    <div id="musicFAB" title="🎵 Play Happy Birthday Song" role="button" aria-label="Toggle music">
-        🎵
-    </div>
+    <div id="musicFAB" title="🎵 Play Happy Birthday Song" role="button" aria-label="Toggle music">🎵</div>
     <audio id="bgAudio" preload="none" loop>
         <source src="music/happy-birthday.mp3" type="audio/mpeg">
     </audio>
@@ -1235,13 +1159,11 @@
                     'Your smile.', 'How deeply you care.', 'Your humor.', 'How you listen.',
                     'Your creativity.', 'Your bravery.', 'Your curiosity.', 'Honestly… just you.',
                 ],
-                musicPath: 'music/happy-birthday.mp3',
             };
 
             const $ = (s) => document.querySelector(s);
             const $$ = (s) => document.querySelectorAll(s);
             const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window && window.innerWidth <= 1024);
-            // Animations always on – removed reducedMotion check
 
             const bgCanvas = $('#bgCanvas');
             const bgCtx = bgCanvas.getContext('2d');
@@ -1265,8 +1187,6 @@
                 fwCanvas.style.height = h + 'px';
                 bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
                 fwCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                bgCtx.scale(1, 1);
-                fwCtx.scale(1, 1);
             }
             window.addEventListener('resize', resizeCanvases);
             window.addEventListener('orientationchange', () => setTimeout(resizeCanvases, 300));
@@ -1334,7 +1254,7 @@
                 }
                 requestAnimationFrame(drawBg);
             }
-            drawBg(); // Always start animation loop
+            drawBg();
 
             function spawnFireworks(cx, cy, count) {
                 count = isMobile ? Math.floor(count * 0.5) : count;
@@ -1488,8 +1408,7 @@
             function animateHappyText(callback) {
                 const bigText = document.createElement('div');
                 bigText.id = 'bigHappy';
-                bigText.style.cssText =
-                    'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10002;text-align:center;pointer-events:none;padding:0 0.5rem;';
+                bigText.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10002;text-align:center;pointer-events:none;padding:0 0.5rem;';
                 cdOverlay.appendChild(bigText);
 
                 const fullText = 'Happy Birthday Elena';
@@ -1501,13 +1420,10 @@
                 span.style.textShadow = '0 0 30px #b794d9, 0 0 60px #6b3fa0';
                 span.style.whiteSpace = 'nowrap';
                 span.style.letterSpacing = '0.05em';
-                span.innerHTML = fullText.split('').map(ch =>
-                    '<span class="happy-text-char">' + ch + '</span>'
-                ).join('');
+                span.innerHTML = fullText.split('').map(ch => '<span class="happy-text-char">' + ch + '</span>').join('');
                 bigText.appendChild(span);
 
                 const chars = bigText.querySelectorAll('.happy-text-char');
-
                 if (window.gsap) {
                     gsap.to(chars, {
                         opacity: 1,
@@ -1519,8 +1435,7 @@
                         delay: 0.15,
                         onComplete: () => {
                             const sparkInterval = setInterval(() => {
-                                spawnFireworks(w / 2 + (Math.random() - 0.5) * 280, h / 2 + (Math.random() - 0.5) *
-                                    180, 8);
+                                spawnFireworks(w / 2 + (Math.random() - 0.5) * 280, h / 2 + (Math.random() - 0.5) * 180, 8);
                             }, 350);
                             setTimeout(() => clearInterval(sparkInterval), 1800);
                         }
@@ -1538,8 +1453,7 @@
                         });
                     }, 2300);
                 } else {
-                    chars.forEach(ch => { ch.style.opacity = 1;
-                        ch.style.transform = 'none'; });
+                    chars.forEach(ch => { ch.style.opacity = 1; ch.style.transform = 'none'; });
                     setTimeout(() => {
                         bigText.remove();
                         if (callback) callback();
@@ -1579,8 +1493,6 @@
                 mainContent.style.opacity = 1;
                 setTimeout(() => scrollToSection('envelopeSection'), 500);
             });
-            cdOpenBtn.addEventListener('touchend', function(e) { e.preventDefault();
-                cdOpenBtn.click(); });
 
             cdNoBtn.addEventListener('click', function() {
                 if (noAnimating) return;
@@ -1604,8 +1516,7 @@
                                 yoyo: true,
                                 repeat: 3,
                                 ease: 'power1.inOut',
-                                onComplete: () => gsap.to(cdOverlay, { x: 0, y: 0,
-                                    rotation: 0, duration: 0.2 })
+                                onComplete: () => gsap.to(cdOverlay, { x: 0, y: 0, rotation: 0, duration: 0.2 })
                             });
                             spawnAngryBurst();
                             setTimeout(() => { noAnimating = false; }, 2400);
@@ -1617,8 +1528,6 @@
                     setTimeout(() => { noAnimating = false; }, 2400);
                 }
             });
-            cdNoBtn.addEventListener('touchend', function(e) { e.preventDefault();
-                cdNoBtn.click(); });
 
             function spawnAngryBurst() {
                 const emojis = ['😤', '💢', '💜', '😤', '💢', '😡', '💜'];
@@ -1657,8 +1566,7 @@
                 envHint.innerHTML = 'wait… 😭';
                 if (window.gsap) {
                     gsap.to(envEl, { rotateX: -6, y: -12, duration: 0.7, ease: 'power2.out' });
-                    gsap.to(envFlap, { rotateX: 178, duration: 0.75, ease: 'power2.out',
-                        boxShadow: '0 12px 35px rgba(0,0,0,0.55)' });
+                    gsap.to(envFlap, { rotateX: 178, duration: 0.75, ease: 'power2.out', boxShadow: '0 12px 35px rgba(0,0,0,0.55)' });
                     gsap.to(envPeek, { opacity: 1, y: -22, duration: 0.7, ease: 'power2.out' });
                     gsap.to(envRay, { height: 120, duration: 0.9, ease: 'power2.out' });
                 } else {
@@ -1678,15 +1586,11 @@
                 }, 1400);
             }
             envWrapper.addEventListener('click', openEnvelope);
-            envWrapper.addEventListener('touchend', function(e) { e.preventDefault();
-                openEnvelope(); });
 
             letterNextBtn.addEventListener('click', function() {
                 unlockAndGoTo('wishesSection');
                 buildWishes();
             });
-            letterNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
-                letterNextBtn.click(); });
 
             let wishesOpenedCount = 0;
 
@@ -1697,12 +1601,10 @@
                     card.className = 'wish-card';
                     card.setAttribute('role', 'button');
                     card.setAttribute('tabindex', '0');
-                    card.innerHTML =
-                        '<span class="wish-number">' + String(wish.number).padStart(2, '0') +
-                        '</span>' +
-                        '<span class="wish-title">' + wish.title + '</span>' +
-                        '<div class="wish-text">' + wish.text + '</div>' +
-                        '<span class="wish-arrow">▼</span>';
+                    card.innerHTML = '<span class="wish-number">' + String(wish.number).padStart(2, '0') + '</span>' +
+                                      '<span class="wish-title">' + wish.title + '</span>' +
+                                      '<div class="wish-text">' + wish.text + '</div>' +
+                                      '<span class="wish-arrow">▼</span>';
                     card.addEventListener('click', function() {
                         if (!card.classList.contains('open')) {
                             card.classList.add('open');
@@ -1715,8 +1617,7 @@
                     });
                     wishesContainer.appendChild(card);
                     if (window.gsap) {
-                        gsap.fromTo(card, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.4,
-                            delay: 0.08 + idx * 0.07, ease: 'power2.out' });
+                        gsap.fromTo(card, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.4, delay: 0.08 + idx * 0.07, ease: 'power2.out' });
                     }
                 });
             }
@@ -1725,8 +1626,6 @@
                 unlockAndGoTo('thingsSection');
                 buildThings();
             });
-            wishesNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
-                wishesNextBtn.click(); });
 
             let flippedCount = 0;
 
@@ -1738,11 +1637,10 @@
                     card.style.aspectRatio = '1';
                     card.style.perspective = '700px';
                     card.style.animationDelay = (i * 0.04) + 's';
-                    card.innerHTML =
-                        '<div class="thing-inner">' +
-                        '<div class="thing-front">' + String(i + 1).padStart(2, '0') + '</div>' +
-                        '<div class="thing-back">' + reason + '</div>' +
-                        '</div>';
+                    card.innerHTML = '<div class="thing-inner">' +
+                                      '<div class="thing-front">' + String(i + 1).padStart(2, '0') + '</div>' +
+                                      '<div class="thing-back">' + reason + '</div>' +
+                                      '</div>';
                     card.addEventListener('click', function() {
                         if (!card.classList.contains('flipped')) {
                             card.classList.add('flipped');
@@ -1768,8 +1666,6 @@
                 unlockAndGoTo('flowerSection');
                 startFlowerAnimation();
             });
-            thingsNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
-                thingsNextBtn.click(); });
 
             let flowerAnimationStarted = false;
 
@@ -1800,7 +1696,7 @@
                     { left: '40%', height: 90 * scaleFactor, size: 27 * scaleFactor },
                 ];
 
-                sunflowerPositions.forEach((pos, i) => {
+                sunflowerPositions.forEach((pos) => {
                     const plant = document.createElement('div');
                     plant.className = 'plant';
                     plant.style.left = pos.left;
@@ -1830,8 +1726,7 @@
                         petal.className = 'petal';
                         petal.style.width = (pos.size * 0.3) + 'px';
                         petal.style.height = (pos.size * 0.3) + 'px';
-                        petal.style.transform = 'translate(-50%, -50%) rotate(' + (p * 45) +
-                            'deg) translateY(-' + (pos.size * 0.55) + 'px)';
+                        petal.style.transform = 'translate(-50%, -50%) rotate(' + (p * 45) + 'deg) translateY(-' + (pos.size * 0.55) + 'px)';
                         petal.style.position = 'absolute';
                         petal.style.top = '50%';
                         petal.style.left = '50%';
@@ -1894,8 +1789,7 @@
                             petal.className = 'petal';
                             petal.style.width = (pos.size * 0.4) + 'px';
                             petal.style.height = (pos.size * 0.4) + 'px';
-                            petal.style.transform = 'translate(-50%, -50%) rotate(' + (p * 60) +
-                                'deg) translateY(-' + (pos.size * 0.4) + 'px)';
+                            petal.style.transform = 'translate(-50%, -50%) rotate(' + (p * 60) + 'deg) translateY(-' + (pos.size * 0.4) + 'px)';
                             petal.style.position = 'absolute';
                             petal.style.top = '50%';
                             petal.style.left = '50%';
@@ -1923,38 +1817,31 @@
                 const plants = $$('.plant');
                 if (window.gsap) {
                     gsap.to(plants, {
-                        height: (i) => i < sunflowerPositions.length ? sunflowerPositions[i].height :
-                            jasminePositions[i - sunflowerPositions.length].height,
+                        height: (i) => i < sunflowerPositions.length ? sunflowerPositions[i].height : jasminePositions[i - sunflowerPositions.length].height,
                         duration: 1.1,
                         stagger: 0.07,
                         ease: 'back.out(1.2)'
                     });
-                    gsap.to('.leaf', { transform: 'scaleX(1)', opacity: 1, duration: 0.5, stagger: 0.08,
-                        delay: 0.9 });
+                    gsap.to('.leaf', { transform: 'scaleX(1)', opacity: 1, duration: 0.5, stagger: 0.08, delay: 0.9 });
                     const sunflowers = $$('.sunflower');
                     sunflowers.forEach((flower, i) => {
-                        gsap.to(flower, { opacity: 1, duration: 0.7, delay: 1.5 + i * 0.4,
-                            ease: 'back.out(1.7)' });
+                        gsap.to(flower, { opacity: 1, duration: 0.7, delay: 1.5 + i * 0.4, ease: 'back.out(1.7)' });
                         const petals = flower.querySelectorAll('.petal');
                         petals.forEach((petal, p) => {
                             petal.style.opacity = 0;
-                            gsap.to(petal, { opacity: 1, duration: 0.3, delay: 1.5 + i * 0.4 + p *
-                                    0.06 });
+                            gsap.to(petal, { opacity: 1, duration: 0.3, delay: 1.5 + i * 0.4 + p * 0.06 });
                         });
                         const disk = flower.querySelector('.center-disk');
                         disk.style.opacity = 0;
-                        gsap.to(disk, { opacity: 1, scale: 1, duration: 0.25, delay: 1.5 + i * 0.4 +
-                                0.5 });
+                        gsap.to(disk, { opacity: 1, scale: 1, duration: 0.25, delay: 1.5 + i * 0.4 + 0.5 });
                     });
                     const jasmines = $$('.jasmine');
                     jasmines.forEach((flower, i) => {
-                        gsap.to(flower, { opacity: 1, duration: 0.5, delay: 2.2 + i * 0.25,
-                            ease: 'back.out(1.7)' });
+                        gsap.to(flower, { opacity: 1, duration: 0.5, delay: 2.2 + i * 0.25, ease: 'back.out(1.7)' });
                         const petals = flower.querySelectorAll('.petal');
                         petals.forEach((petal, p) => {
                             petal.style.opacity = 0;
-                            gsap.to(petal, { opacity: 1, duration: 0.25, delay: 2.2 + i * 0.25 +
-                                p * 0.04 });
+                            gsap.to(petal, { opacity: 1, duration: 0.25, delay: 2.2 + i * 0.25 + p * 0.04 });
                         });
                         const dot = flower.querySelector('.center-dot');
                         dot.style.opacity = 0;
@@ -1962,13 +1849,11 @@
                     });
                 } else {
                     plants.forEach((plant, i) => {
-                        plant.style.height = (i < sunflowerPositions.length ? sunflowerPositions[i]
-                            .height : jasminePositions[i - sunflowerPositions.length].height) + 'px';
+                        plant.style.height = (i < sunflowerPositions.length ? sunflowerPositions[i].height : jasminePositions[i - sunflowerPositions.length].height) + 'px';
                     });
                     $$('.sunflower, .jasmine').forEach(f => { f.style.opacity = 1; });
                     $$('.petal, .center-disk, .center-dot').forEach(el => { el.style.opacity = 1; });
-                    $$('.leaf').forEach(l => { l.style.transform = 'scaleX(1)';
-                        l.style.opacity = 1; });
+                    $$('.leaf').forEach(l => { l.style.transform = 'scaleX(1)'; l.style.opacity = 1; });
                 }
 
                 const totalDelay = 3500;
@@ -2015,10 +1900,12 @@
             btnContinue.addEventListener('click', function() {
                 unlockAndGoTo('questionSection');
             });
-            btnContinue.addEventListener('touchend', function(e) { e.preventDefault();
-                btnContinue.click(); });
+
+            let questionAnswered = false;
 
             function handleQuestion() {
+                if (questionAnswered) return;
+                questionAnswered = true;
                 responseText.style.opacity = 1;
                 spawnConfetti(70);
                 questionNextBtn.style.display = 'inline-block';
@@ -2029,21 +1916,15 @@
                 yesBtn.style.opacity = '0.6';
                 ofCourseBtn.style.opacity = '0.6';
             }
+
             document.getElementById('btnYes').addEventListener('click', handleQuestion);
             document.getElementById('btnOfCourse').addEventListener('click', handleQuestion);
-            document.getElementById('btnYes').addEventListener('touchend', function(e) { e.preventDefault();
-                handleQuestion(); });
-            document.getElementById('btnOfCourse').addEventListener('touchend', function(e) { e.preventDefault();
-                handleQuestion(); });
 
             questionNextBtn.addEventListener('click', function() {
                 unlockAndGoTo('cakeSection');
             });
-            questionNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
-                questionNextBtn.click(); });
 
-            let candlesLit = false,
-                candlesBlown = false;
+            let candlesLit = false, candlesBlown = false;
 
             function lightCandles() {
                 if (candlesLit) return;
@@ -2071,9 +1952,7 @@
                 const flames = $$('.candle .flame');
                 flames.forEach((f, i) => {
                     if (window.gsap) {
-                        gsap.to(f, { opacity: 0, duration: 0.3, delay: i * 0.18, onComplete: () => {
-                                f.style.animation = 'none';
-                            } });
+                        gsap.to(f, { opacity: 0, duration: 0.3, delay: i * 0.18, onComplete: () => { f.style.animation = 'none'; } });
                     } else {
                         f.style.opacity = 0;
                         f.style.animation = 'none';
@@ -2095,15 +1974,10 @@
                 if (!candlesLit) { lightCandles(); return; }
                 blowCandles();
             });
-            cakeWrap.addEventListener('touchend', function(e) { e.preventDefault();
-                if (!candlesLit) { lightCandles(); return; }
-                blowCandles(); });
 
             cakeNextBtn.addEventListener('click', function() {
                 unlockAndGoTo('seventeenSecondsSection');
             });
-            cakeNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
-                cakeNextBtn.click(); });
 
             startSeventeenBtn.addEventListener('click', function() {
                 startSeventeenBtn.style.display = 'none';
@@ -2115,16 +1989,12 @@
                     if (seconds > 0) {
                         seventeenCount.textContent = seconds;
                         if (seconds === 15) seventeenMessage.textContent = "glad we met";
-                        else if (seconds === 10) seventeenMessage.textContent =
-                            "you make me laugh way too much 😭";
-                        else if (seconds === 5) seventeenMessage.textContent =
-                            "still got a lot to do together";
-                        else if (seconds === 1) seventeenMessage.textContent =
-                            "okay why is this timer taking forever 💀";
+                        else if (seconds === 10) seventeenMessage.textContent = "you make me laugh way too much 😭";
+                        else if (seconds === 5) seventeenMessage.textContent = "still got a lot to do together";
+                        else if (seconds === 1) seventeenMessage.textContent = "okay why is this timer taking forever 💀";
                     } else {
                         clearInterval(interval);
-                        seventeenMessage.innerHTML =
-                            "okay… that was 17 seconds 😭<br>yeah, that wasn't nearly enough.<br>I still wanna spend a lot more time with you. 💜";
+                        seventeenMessage.innerHTML = "okay… that was 17 seconds 😭<br>yeah, that wasn't nearly enough.<br>I still wanna spend a lot more time with you. 💜";
                         if (window.gsap) {
                             gsap.to(seventeenCount, { opacity: 0, scale: 0.5, duration: 0.5 });
                         } else {
@@ -2134,8 +2004,6 @@
                     }
                 }, 1000);
             });
-            startSeventeenBtn.addEventListener('touchend', function(e) { e.preventDefault();
-                startSeventeenBtn.click(); });
 
             seventeenNextBtn.addEventListener('click', function() {
                 unlockAndGoTo('finalSection');
@@ -2145,8 +2013,6 @@
                     openFinalBtn.style.pointerEvents = 'auto';
                 }, 400);
             });
-            seventeenNextBtn.addEventListener('touchend', function(e) { e.preventDefault();
-                seventeenNextBtn.click(); });
 
             openFinalBtn.addEventListener('click', function() {
                 if (window.gsap) {
@@ -2160,13 +2026,11 @@
                             finalMessageContainer.style.opacity = 1;
                             const lines = finalMessageContainer.querySelectorAll('.final-line');
                             lines.forEach((line, i) => {
-                                gsap.to(line, { opacity: 1, y: 0, filter: 'blur(0)',
-                                    duration: 0.7, delay: i * 0.55 });
+                                gsap.to(line, { opacity: 1, y: 0, filter: 'blur(0)', duration: 0.7, delay: i * 0.55 });
                             });
                             setTimeout(() => {
                                 spawnConfetti(25);
-                                spawnFireworks(window.innerWidth / 2, window.innerHeight / 2,
-                                    35);
+                                spawnFireworks(window.innerWidth / 2, window.innerHeight / 2, 35);
                             }, 1400);
                         }
                     });
@@ -2182,17 +2046,15 @@
                     spawnConfetti(20);
                 }
             });
-            openFinalBtn.addEventListener('touchend', function(e) { e.preventDefault();
-                openFinalBtn.click(); });
 
-            // Music handling (same as before, without reduced motion checks)
+            // Music handling
             let musicPlaying = false;
             let audioCtx = null;
             let audioSource = null;
 
             function generateHappyBirthdayMelody() {
                 if (!audioCtx) {
-                    audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 }
                 if (audioCtx.state === 'suspended') {
                     audioCtx.resume();
@@ -2250,15 +2112,12 @@
                         audioSource = null;
                     }
                     bgAudio.pause();
-                    if (audioCtx) { audioCtx.close();
-                        audioCtx = null; }
+                    if (audioCtx) { audioCtx.close(); audioCtx = null; }
                     musicPlaying = false;
                     musicFAB.style.animation = '';
                     musicFAB.innerHTML = '🎵';
                 }
             });
-            musicFAB.addEventListener('touchend', function(e) { e.preventDefault();
-                musicFAB.click(); });
 
             let secretTaps = 0;
             secretStar.addEventListener('click', function(e) {
@@ -2271,14 +2130,10 @@
                     spawnConfetti(25);
                 }
             });
-            secretStar.addEventListener('touchend', function(e) { e.preventDefault();
-                secretStar.click(); });
             secretModal.addEventListener('click', function() {
                 secretModal.style.opacity = 0;
                 secretModal.style.visibility = 'hidden';
             });
-            secretModal.addEventListener('touchend', function(e) { e.preventDefault();
-                secretModal.click(); });
 
             const progressDots = $$('.progress-dot');
             const sectionIds = Array.from(progressDots).map(d => d.dataset.section);
@@ -2309,24 +2164,6 @@
                         section.classList.remove('unlocked');
                     }
                 }
-            });
-
-            // Prevent double-tap zoom on buttons
-            document.addEventListener('touchend', function(e) {
-                const target = e.target.closest('.btn, .wish-card, .thing-card, .env-wrapper, #musicFAB, #secretStar');
-                if (target) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
-
-            // Keyboard navigation for progress dots
-            progressDots.forEach(dot => {
-                dot.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        scrollToSection(dot.dataset.section);
-                    }
-                });
             });
 
             console.log('💜 Happy 17th Birthday Elena! — All animations enabled.');
